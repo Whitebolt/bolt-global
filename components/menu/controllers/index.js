@@ -31,12 +31,20 @@ function getMenu(menuName, req) {
 }
 
 let exported = {
-  index: function(component) {
-    let doc = component.doc || component.req.doc || {};
-    return getMenu("main", component.req).then(blah =>
-      component.req.app.components.menu.views.index.compiled(doc, component.req)
-    );
-  }
+	index: function(component) {
+		let doc = component.doc || component.req.doc || {};
+		let parent = component.parent || {};
+		let menuName = parent.menu || "main";
+		let viewName = parent.subMenu?"menu/sub":"menu/index";
+
+		if (!doc.menu || parent._reloadMenu) {
+			return getMenu(menuName, component.req).then(blah =>
+				component.view(viewName, doc, component.req, component.parent)
+			);
+		} else {
+			return component.view(viewName, doc, component.req, component.parent)
+		}
+	}
 };
 
 module.exports = exported;

@@ -1,0 +1,7 @@
+<% doc.menu.items.forEach(item => {
+	if (item.active && item.items) {
+		item.items.forEach(item => {%>
+			<%- view("menu/item", doc, req, {item}); %>
+		<%});
+	}
+})%>
