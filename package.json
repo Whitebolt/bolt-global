@@ -1,0 +1,26 @@
+{
+  "name": "bolt-global",
+  "version": "0.0.1",
+  "description": "Bolt global libraries and components",
+  "main": "index.js",
+  "dependencies": {
+    "bcrypt": "^0.8.7",
+    "bluebird": "^3.4.1",
+    "passport": "^0.3.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@aaron.whitebolt:bolt/bolt-global.git"
+  },
+  "keywords": [
+    "bolt",
+    "server",
+    "express"
+  ],
+  "author": "Stephen Simpson <stephen@whitebolt.net>",
+  "license": "SEE LICENSE IN LICENCE.md"
+}
