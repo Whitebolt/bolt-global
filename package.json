@@ -12,7 +12,16 @@
     "gulp-css-url-rebase": "^0.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-util": "^3.0.7"
+    "gulp-util": "^3.0.7",
+    "gulp-babel": "*",
+    "gulp-concat": "^2.6.0",
+    "gulp-uglify": "*",
+    "babel-preset-es2015": "*"
+  },
+  "babel": {
+    "presets": [
+      "es2015"
+    ]
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
