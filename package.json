@@ -4,9 +4,6 @@
   "description": "Bolt global libraries and components",
   "main": "index.js",
   "dependencies": {
-    "bcrypt": "^0.8.7",
-    "bluebird": "^3.4.1",
-    "passport": "^0.3.2"
   },
   "devDependencies": {
     "foundation-sites": "^6.2.3",

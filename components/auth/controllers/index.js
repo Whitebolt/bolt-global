@@ -1,8 +1,8 @@
 'use strict';
 
-const Promise = require('bluebird');
-const passport = require('passport');
-const bcrypt = require('bcrypt');
+const Promise = module.parent.require('bluebird');
+const passport = module.parent.require('passport');
+const bcrypt = module.parent.require('bcrypt');
 const genSalt = Promise.promisify(bcrypt.genSalt);
 const compare = Promise.promisify(bcrypt.compare);
 const hash = Promise.promisify(bcrypt.hash);
