@@ -1,0 +1,21 @@
+<form>
+	<div class="row columns small-12">
+		<label>Title
+			<input type="text" name="title" placeholder="Page Title" value="<%- doc.page.title %>">
+		</label>
+	</div>
+	<div class="row columns small-12">
+		<label>Content
+			<textarea name="content" rows="8" class="jqte"><%- doc.page.content %></textarea>
+		</label>
+	</div>
+	<div class="row columns small-12">
+		<label>Path
+			<input type="text" name="path" placeholder="Page Title" value="<%- doc.page.path %>">
+		</label>
+	</div>
+
+	<div class="row columns small-12">
+		<button type="button" class="success button">Save</button>
+	</div>
+</form>

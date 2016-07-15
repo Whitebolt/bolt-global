@@ -1,0 +1,5 @@
+<ul class="menu vertical">
+	<% doc.users.forEach(user => {%>
+	<li><a href="/admin/users/<%- user._id %>"><%- user.username %></a></li>
+	<% }); %>
+</ul>

@@ -1,1 +1,48 @@
 @import "./_settings";
+@import "foundation";
+@include foundation-everything;
+@import "./test";
+
+body, html {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+.top-bar {
+	border-bottom: 1px solid $black;
+}
+
+article {
+	padding: 0;
+	margin: 0;
+	border: 0;
+}
+
+.editor {
+	background-color: lighten($primary-color, 40%);
+	height: 100%;
+}
+
+.selector-menu {
+	background-color: lighten($primary-color, 20%);
+	padding: 0;
+	border-right: 1px solid $black;
+	height: 100%;
+
+	ul {
+		height: 100%;
+
+		li {
+			border-bottom: 1px solid $white;
+
+			a {
+				color:darken($white, 5%);
+			}
+
+			a:hover {
+				color: $white;
+			}
+		}
+	}
+}

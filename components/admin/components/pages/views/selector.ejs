@@ -1,0 +1,5 @@
+<ul class="menu vertical">
+	<% doc.pages.forEach(page => {%>
+		<li><a href="/admin/pages/<%- page._id %>"><%- page.title %></a></li>
+	<% }); %>
+</ul>
