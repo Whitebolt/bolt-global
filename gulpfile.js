@@ -7,10 +7,21 @@ const gutil = require('gulp-util');
 const concat = require('gulp-concat');
 const uglify = require('gulp-uglify');
 const babel = require("gulp-babel");
+const embedTemplates = require('gulp-angular-embed-templates');
 
-const scripts = [
-	'./src/scripts/bootstrap.js'
-];
+const jsBuildSources = (require('./package.json').jsBuildRoots || []).concat(['.']);
+
+function flatten(arr) {
+	return arr.reduce((a, b) => a.concat(Array.isArray(b) ? flatten(b) : b), []);
+}
+
+function getJsBuildSources(sources) {
+	return flatten(sources.map(
+		source => require(source + '/package.json').srcRoots.map(
+			buidItem => (source + '/' + buidItem)
+		)
+	));
+}
 
 gulp.task('sass', () => {
 	gulp.src(['./src/scss/*.scss'])
@@ -27,11 +38,13 @@ gulp.task('sass', () => {
 });
 
 gulp.task('minify', () => {
-	gulp.src(scripts)
+	gulp.src(getJsBuildSources(jsBuildSources))
 		.pipe(concat('admin.js'))
+		.pipe(embedTemplates())
 		.pipe(gulp.dest('./public/scripts/'))
-		.on('end', () => gulp.src(scripts)
+		.on('end', () => gulp.src(getJsBuildSources(jsBuildSources))
 			.pipe(concat('admin.min.js'))
+			.pipe(embedTemplates())
 			.pipe(babel())
 			.pipe(uglify().on('error', gutil.log))
 			.pipe(gulp.dest('./public/scripts/'))

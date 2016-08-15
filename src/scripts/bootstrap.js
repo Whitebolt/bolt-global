@@ -1,9 +1,10 @@
-jQuery(document).ready(() => {
-	'use strict';
+angular.element(document).ready(() => {
+	"use strict";
 
-	jQuery(document).foundation();
-	jQuery("textarea.jqte").jqte();
-
-	let selector = jQuery(".selector-menu");
-	let editor = jQuery(".editor");
+	angular.element(document).foundation();
+	/*angular.element("[bolt-app]").each((index, appNode) => {
+		var appName = angular.element(appNode).attr("bolt-app");
+		angular.bootstrap(appNode, [appName]);
+		angular.element("textarea.jqte").jqte();
+	});*/
 });

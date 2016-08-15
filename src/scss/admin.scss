@@ -20,6 +20,44 @@ article {
 	border: 0;
 }
 
+menu-sorter, .menu-sorter  {
+	overflow-y: hidden;
+	overflow-x: scroll;
+
+	h1 {
+		margin: 0;
+		margin-left: $spacer;
+		display: inline-block;
+		font-size: 1.2em;
+	}
+
+	ul.menu-sorter-menu {
+		column-width: $menu-sorter-col-width;
+		-webkit-column-width: $menu-sorter-col-width;
+		-moz-column-width: $menu-sorter-col-width;
+		padding: 0;
+		margin: 0;
+		border: 0;
+
+		li {
+			height: $menu-sorter-item-height;
+			overflow: hidden;
+			border-right: $dropdownmenu-border;
+			border-top: $dropdownmenu-border;
+			background: $dropdownmenu-background;
+			padding: ($spacer / 4);
+
+			&.first-col {
+				border-left: $dropdownmenu-border;
+			}
+
+			&.last-row {
+				border-bottom: $dropdownmenu-border;
+			}
+		}
+	}
+}
+
 .editor {
 	background-color: lighten($primary-color, 40%);
 	height: 100%;

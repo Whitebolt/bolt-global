@@ -3,26 +3,35 @@
   "version": "0.0.1",
   "description": "Bolt global libraries and components",
   "main": "index.js",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
+    "babel-preset-es2015": "*",
     "foundation-sites": "^6.2.3",
     "gulp": "^3.9.1",
+    "gulp-angular-embed-templates": "^2.2.0",
+    "gulp-babel": "*",
     "gulp-clean-css": "^2.0.11",
+    "gulp-concat": "^2.6.0",
     "gulp-css-url-rebase": "^0.2.2",
     "gulp-sass": "^2.3.2",
     "gulp-sourcemaps": "^1.6.0",
-    "gulp-util": "^3.0.7",
-    "gulp-babel": "*",
-    "gulp-concat": "^2.6.0",
     "gulp-uglify": "*",
-    "babel-preset-es2015": "*"
+    "gulp-util": "^3.0.7"
   },
   "babel": {
     "presets": [
       "es2015"
     ]
   },
+  "jsBuildRoots": [
+    "./public/lib/angular-bolt"
+  ],
+  "srcRoots": [
+    "./src/scripts/app.js",
+    "./src/scripts/menuSorter/index.js",
+    "./src/scripts/menuSorter/opener.js",
+    "./src/scripts/bootstrap.js"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

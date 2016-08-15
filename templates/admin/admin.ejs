@@ -8,16 +8,19 @@
 
 	<link rel="stylesheet" href="/css/admin.css">
 </head>
-<body>
+<body bolt-app="bolt.admin">
+	<menu-sorter id="menu-sorter" src="/admin/getCollection">
+	</menu-sorter>
+
 	<nav class="top-bar">
 		<div class="top-bar-left">
 			<ul class="dropdown menu" data-dropdown-menu>
 				<li>
 					<a href="/admin">Admin</a>
 					<ul class="menu vertical">
-						<li><a href="/admin/pages">Pages</a></li>
-						<li><a href="/admin/menus">Menus</a></li>
-						<li><a href="/admin/users">Users</a></li>
+						<li menu-sorter-opener="menu-sorter">Pages</li>
+						<li menu-sorter-opener="menu-sorter">Menus</li>
+						<li menu-sorter-opener="menu-sorter">Users</li>
 					</ul>
 				</li>
 			</ul>
@@ -30,11 +33,6 @@
 		</div>
 	</nav>
 	<article class="row expanded">
-		<div class="columns small-3 selector-menu">
-		<% if (doc && doc.view) {%>
-			<%- view(doc.view, doc, req, parent) %>
-		<% } %>
-		</div>
 		<div class="columns small-9 editor">
 		<% if (doc && doc.viewEditor) {%>
 			<%- view(doc.viewEditor, doc, req, parent) %>
