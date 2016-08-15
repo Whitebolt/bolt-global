@@ -24,12 +24,9 @@
     ]
   },
   "jsBuildRoots": [
-    "./public/lib/angular-bolt"
   ],
   "srcRoots": [
-    "./src/scripts/app.js",
-    "./src/scripts/menuSorter/index.js",
-    "./src/scripts/menuSorter/opener.js",
+    "./src/scripts/foundation.bolt.sorter.js",
     "./src/scripts/bootstrap.js"
   ],
   "scripts": {

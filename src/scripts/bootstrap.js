@@ -1,10 +1,9 @@
-angular.element(document).ready(() => {
+!function($) {
 	"use strict";
 
-	angular.element(document).foundation();
-	/*angular.element("[bolt-app]").each((index, appNode) => {
-		var appName = angular.element(appNode).attr("bolt-app");
-		angular.bootstrap(appNode, [appName]);
-		angular.element("textarea.jqte").jqte();
-	});*/
-});
+	let $doc = $(document);
+
+	$doc.ready(() => {
+		$doc.foundation();
+	});
+}(jQuery);
