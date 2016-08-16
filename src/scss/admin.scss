@@ -6,6 +6,10 @@
 
 html, body {
 	background: black;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	width: 100%;
 }
 
 nav-bar, [nav-bar] {
@@ -36,17 +40,49 @@ nav-bar, [nav-bar] {
 	}
 }
 
-.main-nav {
-	a.button {
-		margin: 0;
-	}
-	box-shadow: 0px 2px 8px black;
-	z-index: 100;
-	border-bottom: 1px solid rgba(0,0,0,.4);
+panel, [panel] {
+	display: block;
+}
+
+badge, [badge] {
+	display: block;
+	text-align: center;
 	width: 100%;
-	position: fixed;
-	top: 0;
-	left: 0;
+
+	img {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}
+
+panel.leftPanel, [panel].leftPanel {
+	background-color: rgba(15, 15, 15, 0.8);
+	box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
+
+	badge, [badge] {
+		h2 {
+			color: white;
+			text-shadow: 1px 1px 3px rgba(0,0,0,.5);
+			font-family: 'Raleway', sans-serif;
+			font-weight: 200;
+		}
+	}
+
+	.menu {
+		li {
+			border-bottom: rgba(255, 255, 255, 0.1);
+		}
+
+		.button {
+			background-color: transparent;
+			border: none;
+			width: 100%;
+
+			&:hover {
+				background-color: fade-out(#1797bf, .5);
+			}
+		}
+	}
 }
 
 @mixin theme-colors($prim, $bg, $nav-bar, $nav-button) {
@@ -61,6 +97,10 @@ nav-bar, [nav-bar] {
 			img { margin: 9px; margin-left: 0; }
 			span { display: inline-block; line-height: 50px; }
 		}
+	}
+
+	panel.leftPanel, [panel].leftPanel {
+		padding-top: 65px;
 	}
 
 	.button:hover { background: scale-color($bg, $lightness: -30%); }

@@ -47,7 +47,7 @@ let exported = {
 				data: [{
 					title: "CMS",
 					iconSrc: "http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/32/iPhoto-icon.png",
-					action: "AdminOpen",
+					action: "AdminPanelOpen",
 					data: "CMS"
 				}, {
 					title: "Clear All",
@@ -56,10 +56,44 @@ let exported = {
 				}, {
 					title: "Modules",
 					iconSrc: "http://icons.iconarchive.com/icons/dakirby309/windows-8-metro/32/Apps-Live-Messenger-Metro-icon.png",
-					action: "AdminOpen",
+					action: "AdminPanelOpen",
 					data: "modules"
 				}]
 			});
+		}
+
+		return Promise.resolve(component);
+	},
+
+	getAdminPanel: function(component) {
+		let req = component.req;
+		if ((req.method.toLowerCase() === 'post') && req.body && req.body.data) {
+			if (req.body.data === 'CMS') {
+				component.res.json({
+					badge: {
+						title: 'CMS',
+						iconSrc: 'http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/128/iPhoto-icon.png'
+					},
+					menu: [{
+						title: "Pages"
+					}, {
+						title: "Blog"
+					}, {
+						title: "Menus"
+					}, {
+						title: "Users"
+					}]
+
+				});
+			} else if (req.body.data === 'modules') {
+				component.res.json({
+					badge: {
+						title: 'Modules',
+						iconSrc: 'http://icons.iconarchive.com/icons/dakirby309/windows-8-metro/128/Apps-Live-Messenger-Metro-icon.png'
+					},
+					menu: false
+				});
+			}
 		}
 
 		return Promise.resolve(component);

@@ -40,11 +40,11 @@ gulp.task('sass', () => {
 gulp.task('minify', () => {
 	gulp.src(getJsBuildSources(jsBuildSources))
 		.pipe(concat('admin.js'))
-		.pipe(embedTemplates())
+		.pipe(embedTemplates({basePath: __dirname + '/src/scripts/admin/'}))
 		.pipe(gulp.dest('./public/scripts/'))
 		.on('end', () => gulp.src(getJsBuildSources(jsBuildSources))
 			.pipe(concat('admin.min.js'))
-			.pipe(embedTemplates())
+			.pipe(embedTemplates({basePath: __dirname + '/src/scripts/admin/'}))
 			.pipe(babel())
 			.pipe(uglify().on('error', gutil.log))
 			.pipe(gulp.dest('./public/scripts/'))
