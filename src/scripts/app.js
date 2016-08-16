@@ -14,7 +14,6 @@ angular.module("bolt.admin", ["bolt"]).directive("boltApp", [
 	}
 
 
-
 	return {
 		restrict: "A",
 		controllerAs,

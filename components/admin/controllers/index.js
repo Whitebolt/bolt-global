@@ -38,6 +38,26 @@ let exported = {
 
 
 		return Promise.resolve(component);
+	},
+
+	getMainNavBar: function(component) {
+		let req = component.req;
+		if (req.method.toLowerCase() === 'post') {
+			component.res.json({
+				data: [{
+					title: "CMS",
+					iconSrc: "http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/32/iPhoto-icon.png"
+				}, {
+					title: "Clear All",
+					iconSrc: "http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/32/settings-icon.png"
+				}, {
+					title: "Modules",
+					iconSrc: "http://icons.iconarchive.com/icons/dakirby309/windows-8-metro/32/Apps-Live-Messenger-Metro-icon.png"
+				}]
+			});
+		}
+
+		return Promise.resolve(component);
 	}
 };
 

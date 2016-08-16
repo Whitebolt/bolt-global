@@ -27,9 +27,8 @@
     "./public/lib/angular-bolt"
   ],
   "srcRoots": [
-    "./src/scripts/layout.js",
-    "./src/scripts/foundation.bolt.nav.js",
     "./src/scripts/app.js",
+    "./src/scripts/navBar/index.js",
     "./src/scripts/bootstrap.js"
   ],
   "scripts": {
