@@ -22,10 +22,8 @@
 		 */
 		function link(scope, root, attributes, controller) {
 			$directive.link({scope, root, controller});
-			$directive.report(controller, "revealSrc", onRevealSrcChange);
 			$directive.report(controller, "reveal", onRevealChange);
 			$directive.report(controller, "hide", onHideChange);
-			scope.$watch(()=>controller._data, data=>onDataChange(data, controller));
 			initDom(controller);
 		}
 
@@ -50,7 +48,7 @@
 			if (controller._unwatchOpen) controller._unwatchOpen.forEach(unwatch=>unwatch());
 			if (reveal) {
 				controller._unwatchOpen = reveal.split(",").map(
-					reveal => $events.on(reveal.trim(), data=>{controller._data = data})
+					reveal => $events.on(reveal.trim(), data=>loadContent(data, controller))
 				);
 			}
 		}
@@ -59,33 +57,42 @@
 			if (controller._unwatchClose) controller._unwatchClose.forEach(unwatch=>unwatch());
 			if (hide) {
 				controller._unwatchClose = hide.split(",").map(
-					hide => $events.on(hide.trim(), data=>{controller._data = data})
+					hide => $events.on(hide.trim(), ()=>{
+						controller.showing = false;
+					})
 				);
 			}
 		}
 
-		function onRevealSrcChange(src, controller) {
-			if (src && controller._data) onDataChange(controller._data, controller);
-		}
+		function loadContent(data, controller) {
+			let src = data.src || controller.revealSrc;
 
-		function onDataChange(data, controller) {
-			if (data && controller.revealSrc) {
-				$ajax.post({
-					src: controller.revealSrc,
-					data: {data}
-				}).then(
-					value => {
-						if (value) {
-							controller.showing = true
-						} else {
-							controller.showing = false;
-						}
-						$bolt.apply({controller, value})
-					}
-				);
+			if (data && src) {
+				$ajax
+					.post({src: src, data: {data}})
+					.then(value => parseContentData(value, controller._revealPreviousValue))
+					.then(value => applyContentData(value, controller));
 			} else {
 				controller.showing = false;
 			}
+		}
+
+		function parseContentData(value, previous={}) {
+			Object.keys(previous).forEach(key=>{
+				if (!value.hasOwnProperty(key)) {
+					value[key] = undefined;
+				} else if ($bolt.isObject(value[key]) && $bolt.isObject(previous[key])) {
+					value[key] = parseContentData(value[key], previous[key]);
+				}
+			});
+			return value;
+		}
+
+		function applyContentData(value, controller) {
+			controller.showing = (value?true:false);
+			$bolt.apply({controller, value}).then(()=>{
+				controller._revealPreviousValue = value;
+			});
 		}
 
 		function getDimensions(node) {

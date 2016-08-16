@@ -98,8 +98,7 @@ let exported = {
 					badge: {
 						title: 'Modules',
 						iconSrc: 'http://icons.iconarchive.com/icons/dakirby309/windows-8-metro/128/Apps-Live-Messenger-Metro-icon.png'
-					},
-					menu: false
+					}
 				});
 			}
 		}
