@@ -22,9 +22,9 @@
 		 */
 		function link(scope, root, attributes, controller) {
 			$directive.link({scope, root, controller});
-			$directive.report(controller, "src", onSrcChange);
-			$directive.report(controller, "open", onOpenChange);
-			$directive.report(controller, "close", onCloseChange);
+			$directive.report(controller, "revealSrc", onRevealSrcChange);
+			$directive.report(controller, "reveal", onRevealChange);
+			$directive.report(controller, "hide", onHideChange);
 			scope.$watch(()=>controller._data, data=>onDataChange(data, controller));
 			initDom(controller);
 		}
@@ -46,32 +46,32 @@
 			});
 		}
 
-		function onOpenChange(open, controller) {
+		function onRevealChange(reveal, controller) {
 			if (controller._unwatchOpen) controller._unwatchOpen.forEach(unwatch=>unwatch());
-			if (open) {
-				controller._unwatchOpen = open.split(",").map(
-					open => $events.on(open.trim(), data=>{controller._data = data})
+			if (reveal) {
+				controller._unwatchOpen = reveal.split(",").map(
+					reveal => $events.on(reveal.trim(), data=>{controller._data = data})
 				);
 			}
 		}
 
-		function onCloseChange(close, controller) {
+		function onHideChange(hide, controller) {
 			if (controller._unwatchClose) controller._unwatchClose.forEach(unwatch=>unwatch());
-			if (close) {
-				controller._unwatchClose = close.split(",").map(
-					close => $events.on(close.trim(), data=>{controller._data = data})
+			if (hide) {
+				controller._unwatchClose = hide.split(",").map(
+					hide => $events.on(hide.trim(), data=>{controller._data = data})
 				);
 			}
 		}
 
-		function onSrcChange(src, controller) {
+		function onRevealSrcChange(src, controller) {
 			if (src && controller._data) onDataChange(controller._data, controller);
 		}
 
 		function onDataChange(data, controller) {
-			if (data && controller.src) {
+			if (data && controller.revealSrc) {
 				$ajax.post({
-					src: controller.src,
+					src: controller.revealSrc,
 					data: {data}
 				}).then(
 					value => {
@@ -116,11 +116,16 @@
 			);
 		}
 
+		function doAction(item, controller=this) {
+			if (item.action) $events.fire(item.action, item.data, controller);
+		}
+
 
 		function panelController() {
 			let controller = this;
 			controller._name = directiveName + "Controller";
 			controller.showing = false;
+			controller.doAction = doAction.bind(controller);
 		}
 
 		return {
@@ -131,9 +136,9 @@
 			bindToController: {
 				width: "@",
 				height: "@",
-				open: "@",
-				close: "@",
-				src: "@"
+				reveal: "@",
+				hide: "@",
+				revealSrc: "@"
 			},
 			link
 		};

@@ -11,12 +11,17 @@
 <body bolt-app="bolt.admin" class="blue">
 
 <nav-bar src="/admin/getMainNavBar"></nav-bar>
-<panel width="20" class="leftPanel" src="/admin/getAdminPanel" open="AdminPanelOpen" close="AdminClearAll">
-	<badge ng-hide="!panel.badge" title="{{panel.badge.title}}" icon-src="{{panel.badge.iconSrc}}"></badge>
+<panel
+		width="20" class="leftPanel"
+		reveal-src="/admin/getAdminPanel" reveal="AdminPanelOpen"
+		hide="AdminClearAll,AdminClearLeft"
+><badge ng-hide="!panel.badge" title="{{panel.badge.title}}" icon-src="{{panel.badge.iconSrc}}"></badge>
 
 	<ul class="menu vertical" ng-hide="!panel.menu">
 		<li ng-repeat="item in panel.menu">
-			<button class="button">{{item.title}}</button>
+			<button class="button" ng-click="panel.doAction(item)">
+				<img ng-src="{{item.iconSrc}}" ng-hide="!item.iconSrc">{{item.title}}
+			</button>
 		</li>
 	</ul>
 </panel>
