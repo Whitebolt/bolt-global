@@ -75,13 +75,21 @@ let exported = {
 						iconSrc: 'http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/128/iPhoto-icon.png'
 					},
 					menu: [{
-						title: "Pages"
+						title: "Pages",
+						action: "SelectorPanelOpen",
+						data: "CMS/Pages"
 					}, {
-						title: "Blog"
+						title: "Blog",
+						action: "SelectorPanelOpen",
+						data: "CMS/Pages"
 					}, {
-						title: "Menus"
+						title: "Menus",
+						action: "SelectorPanelOpen",
+						data: "CMS/Pages"
 					}, {
-						title: "Users"
+						title: "Users",
+						action: "SelectorPanelOpen",
+						data: "CMS/Pages"
 					}]
 
 				});
