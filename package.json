@@ -27,9 +27,10 @@
     "./public/lib/angular-bolt"
   ],
   "srcRoots": [
-    "./src/scripts/app.js",
-    "./src/scripts/navBar/index.js",
-    "./src/scripts/bootstrap.js"
+    "./src/scripts/admin/app.js",
+    "./src/scripts/admin/boltUiEvents.js",
+    "./src/scripts/admin/navBar/index.js",
+    "./src/scripts/admin/bootstrap.js"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

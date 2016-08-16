@@ -1,8 +1,9 @@
-angular.module("bolt.admin", ["bolt"]).factory("boltUiEvents", [
+angular.module("bolt.admin").factory("boltUiEvents", [
 () => {
 	"use strict";
 
 	const events = new Map();
+
 	let id = 0;
 
 	function on(eventName, callback, context) {
@@ -34,12 +35,10 @@ angular.module("bolt.admin", ["bolt"]).factory("boltUiEvents", [
 		}, params);
 	}
 
-	function fire(eventName, data) {
-		if (events.has(eventName)) {
-			events.get(eventName).forEach(event => {
-				event.callback.call(event.context || {}, data);
-			});
-		}
+	function fire(eventName, data, controller) {
+		if (events.has(eventName)) events.get(eventName).forEach(
+			event => event.callback.call(event.context || {}, data, controller)
+		);
 	}
 
 	return {

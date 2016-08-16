@@ -36,14 +36,8 @@ angular.module("bolt.admin").directive("navBar", [
 		}
 	}
 
-	function doAction(item) {
-		if (item.action) {
-			if (item.action === "open") {
-				$events.fire("AdminOpen", item.open);
-			} else if (item.action === "clear-all") {
-				$events.fire("AdminClearAll");
-			}
-		}
+	function doAction(item, controller=this) {
+		if (item.action) $events.fire(item.action, item.data, controller);
 	}
 
 
@@ -59,7 +53,7 @@ angular.module("bolt.admin").directive("navBar", [
 		restrict: "AE",
 		controllerAs,
 		scope: true,
-		templateUrl: "./index.html",
+		templateUrl: "index.html",
 		controller: [navBarController],
 		bindToController: {
 			src: "@src"

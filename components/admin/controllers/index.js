@@ -47,17 +47,17 @@ let exported = {
 				data: [{
 					title: "CMS",
 					iconSrc: "http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/32/iPhoto-icon.png",
-					action: "open",
-					open: "CMS"
+					action: "AdminOpen",
+					data: "CMS"
 				}, {
 					title: "Clear All",
 					iconSrc: "http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/32/settings-icon.png",
-					action: "clear-all"
+					action: "AdminClearAll"
 				}, {
 					title: "Modules",
 					iconSrc: "http://icons.iconarchive.com/icons/dakirby309/windows-8-metro/32/Apps-Live-Messenger-Metro-icon.png",
-					action: "open",
-					open: "modules"
+					action: "AdminOpen",
+					data: "modules"
 				}]
 			});
 		}
