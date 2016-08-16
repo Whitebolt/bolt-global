@@ -2,7 +2,8 @@ angular.module("bolt.admin").directive("navBar", [
 	"$bolt",
 	"boltAjax",
 	"boltDirective",
-($bolt, $ajax, $directive) => {
+	"boltUiEvents",
+($bolt, $ajax, $directive, $events) => {
 	"use strict";
 
 	const controllerAs = "navBar";
@@ -21,13 +22,7 @@ angular.module("bolt.admin").directive("navBar", [
 	 */
 	function link(scope, root, attributes, controller) {
 		$directive.link({scope, root, controller});
-		initDom(controller);
 		$directive.report(controller, "src", onSrcChange);
-		$directive.report(controller, "data", onDataChange);
-	}
-
-	function initDom(controller) {
-
 	}
 
 	function onSrcChange(src, controller) {
@@ -35,34 +30,36 @@ angular.module("bolt.admin").directive("navBar", [
 			controller._src = src;
 			$ajax.post({
 				src: src
-			}).then(value => {
-				value.data = parseData(value.data);
-				return $bolt.apply({controller, value});
-			});
+			}).then(
+				value => $bolt.apply({controller, value})
+			);
 		}
 	}
 
-	function onDataChange(data, controller) {
-		if (data) {
-			console.log(data);
+	function doAction(item) {
+		if (item.action) {
+			if (item.action === "open") {
+				$events.fire("AdminOpen", item.open);
+			} else if (item.action === "clear-all") {
+				$events.fire("AdminClearAll");
+			}
 		}
 	}
 
-	function parseData(data) {
-		return data;
-	}
+
 
 	function navBarController() {
 		let controller = this;
 		controller._name = controllerAs + "Controller";
 		controller._src = "";
+		controller.doAction = doAction.bind(controller);
 	}
 
 	return {
 		restrict: "AE",
 		controllerAs,
 		scope: true,
-		templateUrl: "index.html",
+		templateUrl: "./index.html",
 		controller: [navBarController],
 		bindToController: {
 			src: "@src"
