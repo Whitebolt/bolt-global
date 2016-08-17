@@ -33,7 +33,7 @@
 		}
 
 		function hide(controller) {
-			if (controller.stateHide.trim() !== "") $state.set(controller.stateHide, true);
+			if (controller.stateHide && (controller.stateHide.trim() !== "")) $state.set(controller.stateHide, true);
 		}
 
 

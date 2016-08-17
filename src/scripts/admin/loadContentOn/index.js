@@ -78,11 +78,11 @@
 		}
 
 		function hide(controller) {
-			if (controller.stateHide.trim() !== "") $state.set(controller.stateHide, true);
+			if (controller.stateHide && (controller.stateHide.trim() !== "")) $state.set(controller.stateHide, true);
 		}
 
 		function show(controller) {
-			if (controller.stateHide.trim() !== "") $state.set(controller.stateHide, false);
+			if (controller.stateHide && (controller.stateHide.trim() !== "")) $state.set(controller.stateHide, false);
 		}
 
 

@@ -24,7 +24,7 @@
 
 		function onStateHideChange(stateName, controller) {
 			if (controller._unwatch) controller._unwatch();
-			if (stateName.toString().trim() !== "") {
+			if (stateName && (stateName.trim() !== "")) {
 				controller._unwatch = $state.watch(stateName, value=>showHide(value, controller));
 			}
 		}
