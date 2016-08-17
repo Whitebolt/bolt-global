@@ -15,10 +15,10 @@
 		width="20" class="leftPanel"
 		reveal-src="/admin/getAdminPanel" reveal="AdminPanelOpen"
 		hide="AdminClearAll,AdminClearLeft"
-><badge ng-hide="!panel.badge" title="{{panel.badge.title}}" icon-src="{{panel.badge.iconSrc}}"></badge>
+><badge ng-hide="!reveal.badge" title="{{reveal.badge.title}}" icon-src="{{reveal.badge.iconSrc}}"></badge>
 
-	<ul class="menu vertical" ng-hide="!panel.menu">
-		<li ng-repeat="item in panel.menu">
+	<ul class="menu vertical" ng-hide="!reveal.menu">
+		<li ng-repeat="item in reveal.menu">
 			<button class="button" ng-click="panel.doAction(item)">
 				<img ng-src="{{item.iconSrc}}" ng-hide="!item.iconSrc">{{item.title}}
 			</button>

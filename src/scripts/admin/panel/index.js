@@ -22,77 +22,27 @@
 		 */
 		function link(scope, root, attributes, controller) {
 			$directive.link({scope, root, controller});
-			$directive.report(controller, "reveal", onRevealChange);
 			$directive.report(controller, "hide", onHideChange);
 			initDom(controller);
 		}
 
 		function initDom(controller) {
-			setShowHide(controller);
+			hide(controller);
 			applyFoundation(controller);
 			applyDimensions(controller);
 		}
 
-		function setShowHide(controller) {
-			controller.root.removeClass("ng-hide");
-			controller.parent.$watch(()=>controller.showing, showing=>{
-				if (showing) {
-					controller.root.removeClass("ng-hide");
-				} else {
-					controller.root.addClass("ng-hide");
-				}
-			});
+		function hide(controller) {
+			controller.root.addClass("ng-hide");
 		}
 
-		function onRevealChange(reveal, controller) {
-			if (controller._unwatchOpen) controller._unwatchOpen.forEach(unwatch=>unwatch());
-			if (reveal) {
-				controller._unwatchOpen = reveal.split(",").map(
-					reveal => $events.on(reveal.trim(), data=>loadContent(data, controller))
-				);
-			}
-		}
-
-		function onHideChange(hide, controller) {
+		function onHideChange(eventNames, controller) {
 			if (controller._unwatchClose) controller._unwatchClose.forEach(unwatch=>unwatch());
-			if (hide) {
-				controller._unwatchClose = hide.split(",").map(
-					hide => $events.on(hide.trim(), ()=>{
-						controller.showing = false;
-					})
+			if (eventNames.toString().trim() !== "") {
+				controller._unwatchClose = eventNames.toString().split(",").map(
+					eventName => $events.on(eventName.trim(), ()=>hide(controller))
 				);
 			}
-		}
-
-		function loadContent(data, controller) {
-			let src = data.src || controller.revealSrc;
-
-			if (data && src) {
-				$ajax
-					.post({src: src, data: {data}})
-					.then(value => parseContentData(value, controller._revealPreviousValue))
-					.then(value => applyContentData(value, controller));
-			} else {
-				controller.showing = false;
-			}
-		}
-
-		function parseContentData(value, previous={}) {
-			Object.keys(previous).forEach(key=>{
-				if (!value.hasOwnProperty(key)) {
-					value[key] = undefined;
-				} else if ($bolt.isObject(value[key]) && $bolt.isObject(previous[key])) {
-					value[key] = parseContentData(value[key], previous[key]);
-				}
-			});
-			return value;
-		}
-
-		function applyContentData(value, controller) {
-			controller.showing = (value?true:false);
-			$bolt.apply({controller, value}).then(()=>{
-				controller._revealPreviousValue = value;
-			});
 		}
 
 		function getDimensions(node) {
@@ -131,7 +81,6 @@
 		function panelController() {
 			let controller = this;
 			controller._name = directiveName + "Controller";
-			controller.showing = false;
 			controller.doAction = doAction.bind(controller);
 		}
 
@@ -143,9 +92,7 @@
 			bindToController: {
 				width: "@",
 				height: "@",
-				reveal: "@",
-				hide: "@",
-				revealSrc: "@"
+				hide: "@"
 			},
 			link
 		};
