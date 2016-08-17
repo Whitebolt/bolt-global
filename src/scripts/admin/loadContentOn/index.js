@@ -41,7 +41,8 @@
 				$ajax
 					.post({src: src, data: {data: data.data}})
 					.then(value => parseContentData(value, controller._previous))
-					.then(value => applyContentData(value, controller));
+					.then(value => applyContentData(value, controller))
+					.then(value => afterApplyContent(value, controller));
 			} else {
 				hide(controller);
 			}
@@ -60,9 +61,12 @@
 
 		function applyContentData(value, controller) {
 			showHide(value, controller);
-			$bolt.apply({controller, value}).then(()=>{
-				controller._previous = value;
-			});
+			return $bolt.apply({controller, value});
+		}
+
+		function afterApplyContent(value, controller) {
+			controller._previous = value;
+			if (controller.stateData && (controller.stateData.trim() !== "")) $state.set(controller.stateData, value);
 		}
 
 		function showHide(value, controller) {
@@ -95,7 +99,8 @@
 			bindToController: {
 				loadContentOn: "@",
 				src: "@",
-				stateHide: "@"
+				stateHide: "@",
+				stateData: "@"
 			},
 			link
 		};
