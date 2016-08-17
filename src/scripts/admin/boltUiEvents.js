@@ -1,5 +1,4 @@
-angular.module("bolt.admin").factory("boltUiEvents", [
-() => {
+angular.module("bolt.admin").factory("boltUiEvents", ["$timeout", ($timeout) => {
 	"use strict";
 
 	const events = new Map();
@@ -37,7 +36,9 @@ angular.module("bolt.admin").factory("boltUiEvents", [
 
 	function fire(eventName, data, controller) {
 		if (events.has(eventName)) events.get(eventName).forEach(
-			event => event.callback.call(event.context || {}, data, controller)
+			event => $timeout(
+				()=>event.callback.call(event.context || {}, data, controller)
+			)
 		);
 	}
 
