@@ -29,6 +29,8 @@
   "srcRoots": [
     "./src/scripts/admin/app.js",
     "./src/scripts/admin/boltUiEvents.js",
+    "./src/scripts/admin/boltUiState.js",
+    "./src/scripts/admin/stateHide/index.js",
     "./src/scripts/admin/loadContentOn/index.js",
     "./src/scripts/admin/hideOn/index.js",
     "./src/scripts/admin/panel/index.js",

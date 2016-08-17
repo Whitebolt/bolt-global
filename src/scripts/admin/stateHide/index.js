@@ -1,11 +1,10 @@
-!function(directiveName="hideOn") {
+!function(directiveName="stateHide") {
 	"use strict";
 
 	angular.module("bolt.admin").directive(directiveName, [
 		"boltDirective",
-		"boltUiEvents",
 		"boltUiState",
-	($directive, $events, $state) => {
+	($directive, $state) => {
 
 		/**
 		 * @description
@@ -20,24 +19,34 @@
 		 */
 		function link(scope, root, attributes, controller) {
 			$directive.link({scope, root, controller});
-			$directive.report(controller, directiveName, onHideChange);
+			$directive.report(controller, directiveName, onStateHideChange);
 		}
 
-		function onHideChange(eventNames, controller) {
-			if (controller._unwatch) controller._unwatch.forEach(unwatch=>unwatch());
-			if (eventNames.toString().trim() !== "") {
-				controller._unwatch = eventNames.toString().split(",").map(
-					eventName => $events.on(eventName.trim(), ()=>hide(controller))
-				);
+		function onStateHideChange(stateName, controller) {
+			if (controller._unwatch) controller._unwatch();
+			if (stateName.toString().trim() !== "") {
+				controller._unwatch = $state.watch(stateName, value=>showHide(value, controller));
+			}
+		}
+
+		function showHide(value, controller) {
+			if (value) {
+				hide (controller);
+			} else {
+				show(controller);
 			}
 		}
 
 		function hide(controller) {
-			if (controller.stateHide.trim() !== "") $state.set(controller.stateHide, true);
+			controller.root.addClass("ng-hide");
+		}
+
+		function show(controller) {
+			controller.root.removeClass("ng-hide");
 		}
 
 
-		function hideOnController() {
+		function stateHide() {
 			let controller = this;
 			controller._name = directiveName + "Controller";
 		}
@@ -46,9 +55,8 @@
 			restrict: "A",
 			controllerAs: directiveName,
 			scope: true,
-			controller: [hideOnController],
+			controller: [stateHide],
 			bindToController: {
-				hideOn: "@",
 				stateHide: "@"
 			},
 			link

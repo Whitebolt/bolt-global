@@ -6,7 +6,8 @@
 		"boltAjax",
 		"boltDirective",
 		"boltUiEvents",
-	($bolt, $ajax, $directive, $events) => {
+		"boltUiState",
+	($bolt, $ajax, $directive, $events, $state) => {
 
 		/**
 		 * @description
@@ -42,7 +43,7 @@
 					.then(value => parseContentData(value, controller._previous))
 					.then(value => applyContentData(value, controller));
 			} else {
-				controller.showing = false;
+				hide(controller);
 			}
 		}
 
@@ -72,12 +73,12 @@
 			}
 		}
 
-		function show(controller) {
-			controller.root.removeClass("ng-hide");
+		function hide(controller) {
+			if (controller.stateHide.trim() !== "") $state.set(controller.stateHide, true);
 		}
 
-		function hide(controller) {
-			controller.root.addClass("ng-hide");
+		function show(controller) {
+			if (controller.stateHide.trim() !== "") $state.set(controller.stateHide, false);
 		}
 
 
@@ -93,7 +94,8 @@
 			controller: [loadContentOnController],
 			bindToController: {
 				loadContentOn: "@",
-				src: "@"
+				src: "@",
+				stateHide: "@"
 			},
 			link
 		};

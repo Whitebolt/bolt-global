@@ -15,7 +15,13 @@
 		width="20" class="leftPanel"
 		src="/admin/getAdminPanel" load-content-on="AdminPanelOpen"
 		hide-on="AdminClearAll,AdminClearLeft"
-><badge ng-hide="!loadContentOn.badge" title="{{loadContentOn.badge.title}}" icon-src="{{loadContentOn.badge.iconSrc}}"></badge>
+		state-hide="leftPanelHide"
+>
+	<badge
+			ng-hide="!loadContentOn.badge"
+			title="{{loadContentOn.badge.title}}"
+			icon-src="{{loadContentOn.badge.iconSrc}}"
+	></badge>
 
 	<ul class="menu vertical" ng-hide="!loadContentOn.menu">
 		<li ng-repeat="item in loadContentOn.menu">

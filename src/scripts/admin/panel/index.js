@@ -7,7 +7,8 @@
 		"boltDirective",
 		"boltUiEvents",
 		"$window",
-	($bolt, $ajax, $directive, $events, $win) => {
+		"boltUiState",
+	($bolt, $ajax, $directive, $events, $win, $state) => {
 
 		/**
 		 * @description
@@ -32,7 +33,7 @@
 		}
 
 		function hide(controller) {
-			controller.root.addClass("ng-hide");
+			if (controller.stateHide.trim() !== "") $state.set(controller.stateHide, true);
 		}
 
 		function getDimensions(node) {
@@ -82,7 +83,8 @@
 			bindToController: {
 				width: "@",
 				height: "@",
-				hide: "@"
+				hide: "@",
+				stateHide: "@"
 			},
 			link
 		};
