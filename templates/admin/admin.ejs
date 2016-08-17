@@ -13,12 +13,12 @@
 <nav-bar src="/admin/getMainNavBar"></nav-bar>
 <panel
 		width="20" class="leftPanel"
-		reveal-src="/admin/getAdminPanel" reveal="AdminPanelOpen"
-		hide="AdminClearAll,AdminClearLeft"
-><badge ng-hide="!reveal.badge" title="{{reveal.badge.title}}" icon-src="{{reveal.badge.iconSrc}}"></badge>
+		src="/admin/getAdminPanel" load-content-on="AdminPanelOpen"
+		hide-on="AdminClearAll,AdminClearLeft"
+><badge ng-hide="!loadContentOn.badge" title="{{loadContentOn.badge.title}}" icon-src="{{loadContentOn.badge.iconSrc}}"></badge>
 
-	<ul class="menu vertical" ng-hide="!reveal.menu">
-		<li ng-repeat="item in reveal.menu">
+	<ul class="menu vertical" ng-hide="!loadContentOn.menu">
+		<li ng-repeat="item in loadContentOn.menu">
 			<button class="button" ng-click="panel.doAction(item)">
 				<img ng-src="{{item.iconSrc}}" ng-hide="!item.iconSrc">{{item.title}}
 			</button>

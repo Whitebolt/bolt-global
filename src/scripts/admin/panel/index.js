@@ -22,7 +22,6 @@
 		 */
 		function link(scope, root, attributes, controller) {
 			$directive.link({scope, root, controller});
-			$directive.report(controller, "hide", onHideChange);
 			initDom(controller);
 		}
 
@@ -34,15 +33,6 @@
 
 		function hide(controller) {
 			controller.root.addClass("ng-hide");
-		}
-
-		function onHideChange(eventNames, controller) {
-			if (controller._unwatchClose) controller._unwatchClose.forEach(unwatch=>unwatch());
-			if (eventNames.toString().trim() !== "") {
-				controller._unwatchClose = eventNames.toString().split(",").map(
-					eventName => $events.on(eventName.trim(), ()=>hide(controller))
-				);
-			}
 		}
 
 		function getDimensions(node) {

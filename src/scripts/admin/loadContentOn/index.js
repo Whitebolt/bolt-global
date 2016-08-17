@@ -1,4 +1,4 @@
-!function(directiveName="reveal") {
+!function(directiveName="loadContentOn") {
 	"use strict";
 
 	angular.module("bolt.admin").directive(directiveName, [
@@ -25,21 +25,21 @@
 		}
 
 		function onRevealChange(eventNames, controller) {
-			if (controller._unwatchOpen) controller._unwatchOpen.forEach(unwatch=>unwatch());
+			if (controller._unwatch) controller._unwatch.forEach(unwatch=>unwatch());
 			if (eventNames.toString().trim() !== "") {
-				controller._unwatchOpen = eventNames.toString().split(",").map(
+				controller._unwatch = eventNames.toString().split(",").map(
 					eventName => $events.on(eventName.trim(), data=>loadContent(data, controller))
 				);
 			}
 		}
 
 		function loadContent(data, controller) {
-			let src = data.src || controller.revealSrc;
+			let src = data.src || controller.src;
 
 			if (data && src) {
 				$ajax
 					.post({src: src, data: {data}})
-					.then(value => parseContentData(value, controller._revealPreviousValue))
+					.then(value => parseContentData(value, controller._previous))
 					.then(value => applyContentData(value, controller));
 			} else {
 				controller.showing = false;
@@ -60,7 +60,7 @@
 		function applyContentData(value, controller) {
 			showHide(value, controller);
 			$bolt.apply({controller, value}).then(()=>{
-				controller._revealPreviousValue = value;
+				controller._previous = value;
 			});
 		}
 
@@ -81,7 +81,7 @@
 		}
 
 
-		function revealController() {
+		function loadContentOnController() {
 			let controller = this;
 			controller._name = directiveName + "Controller";
 		}
@@ -90,10 +90,10 @@
 			restrict: "A",
 			controllerAs: directiveName,
 			scope: true,
-			controller: [revealController],
+			controller: [loadContentOnController],
 			bindToController: {
-				reveal: "@",
-				revealSrc: "@"
+				loadContentOn: "@",
+				src: "@"
 			},
 			link
 		};
