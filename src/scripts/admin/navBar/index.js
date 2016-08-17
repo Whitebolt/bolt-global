@@ -47,8 +47,16 @@
 			}
 		}
 
+		function getData(item) {
+			let data = {
+				data: item.data
+			};
+			if (item.src) data.src = item.src;
+			return data;
+		}
+
 		function doAction(item, controller=this) {
-			if (item.action) $events.fire(item.action, item.data, controller);
+			if (item.action) $events.fire(item.action, getData(item), controller);
 		}
 
 

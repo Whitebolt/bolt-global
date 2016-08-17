@@ -39,7 +39,7 @@
 
 			if (data && src) {
 				$ajax
-					.post({src: src, data: {data}})
+					.post({src: src, data: {data: data.data}})
 					.then(value => parseContentData(value, controller._previous))
 					.then(value => applyContentData(value, controller));
 			} else {
