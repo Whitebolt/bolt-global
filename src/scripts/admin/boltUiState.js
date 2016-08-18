@@ -20,7 +20,7 @@ angular.module("bolt.admin").factory("boltUiState", [
 		$location.hash(_randomId());
 	}
 
-	function set(key, value) {
+	function set(key, value, controller={_name:"unknown"}) {
 		state.set(key, value);
 		if (_getWatchCount(key)) $timeout(()=>$rootScope.$apply());
 		return get(key);

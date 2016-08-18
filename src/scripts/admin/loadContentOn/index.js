@@ -82,7 +82,7 @@
 		}
 
 		function showHide(value, controller) {
-			if (value) {
+			if (value || (value === undefined)) {
 				show(controller);
 			} else {
 				hide (controller);
@@ -91,11 +91,11 @@
 		}
 
 		function hide(controller) {
-			if (controller.stateHide && (controller.stateHide.trim() !== "")) $state.set(controller.stateHide, true);
+			if (controller.stateHide && (controller.stateHide.trim() !== "")) $state.set(controller.stateHide, true, controller);
 		}
 
 		function show(controller) {
-			if (controller.stateHide && (controller.stateHide.trim() !== "")) $state.set(controller.stateHide, false);
+			if (controller.stateHide && (controller.stateHide.trim() !== "")) $state.set(controller.stateHide, false, controller);
 		}
 
 
