@@ -7,7 +7,7 @@ angular.module("bolt.admin").factory("boltUiEvents", ["$timeout", ($timeout) => 
 
 	function on(eventName, callback, context) {
 		if (!events.has(eventName)) events.set(eventName, []);
-		let event = createOnOptions(callback, context);
+		let event = _createOnOptions(callback, context);
 		let _events = events.get(eventName);
 		_events.push(event);
 
@@ -20,11 +20,6 @@ angular.module("bolt.admin").factory("boltUiEvents", ["$timeout", ($timeout) => 
 				}
 			});
 		}
-	}
-
-	function createOnOptions(callback, context) {
-		id++;
-		return {callback, id, context};
 	}
 
 	function once(eventName, callback, context) {
@@ -40,6 +35,11 @@ angular.module("bolt.admin").factory("boltUiEvents", ["$timeout", ($timeout) => 
 				()=>event.callback.call(event.context || {}, data, controller)
 			)
 		);
+	}
+
+	function _createOnOptions(callback, context) {
+		id++;
+		return {callback, id, context};
 	}
 
 	return {

@@ -8,13 +8,6 @@ angular.module("bolt.admin").factory("boltUiState", [
 	const state = new Map();
 	const watchers = new Map();
 
-	function randomId(length=32) {
-		let id = "";
-		for (let n=1; n<=length; n++) {
-			id += parseInt(Math.random() * 16, 10).toString(16);
-		}
-		return id.toUpperCase();
-	}
 
 	function get(key) {
 		return (state.has(key) ? state.get(key) : undefined);
@@ -24,12 +17,12 @@ angular.module("bolt.admin").factory("boltUiState", [
 		let historyState = {};
 		state.forEach((value, key) => {historyState[key] = value});
 		$location.state(historyState);
-		$location.hash(randomId());
+		$location.hash(_randomId());
 	}
 
 	function set(key, value) {
 		state.set(key, value);
-		if (getWatchCount(key)) $timeout(()=>$rootScope.$apply());
+		if (_getWatchCount(key)) $timeout(()=>$rootScope.$apply());
 		return get(key);
 	}
 
@@ -37,30 +30,39 @@ angular.module("bolt.admin").factory("boltUiState", [
 		return state.has(key);
 	}
 
-	function getWatchCount(key) {
+	function watch(key, callback) {
+		let unwatch = $rootScope.$watch(()=>get(key), callback);
+		_incWatchCount(key);
+		return ()=>{
+			_decWatchCount(key);
+			unwatch();
+		}
+	}
+
+	function _randomId(length=32) {
+		let id = "";
+		for (let n=1; n<=length; n++) {
+			id += parseInt(Math.random() * 16, 10).toString(16);
+		}
+		return id.toUpperCase();
+	}
+
+	function _getWatchCount(key) {
 		return (watchers.has(key) ? watchers.get(key) : 0);
 	}
 
-	function decWatchCount(key) {
-		let count = getWatchCount(key);
+	function _decWatchCount(key) {
+		let count = _getWatchCount(key);
 		count--;
 		watchers.set(key, (count>=0)?count:0);
 	}
 
-	function incWatchCount(key) {
-		let count = getWatchCount(key);
+	function _incWatchCount(key) {
+		let count = _getWatchCount(key);
 		count++;
 		watchers.set(key, count);
 	}
 
-	function watch(key, callback) {
-		let unwatch = $rootScope.$watch(()=>get(key), callback);
-		incWatchCount(key);
-		return ()=>{
-			decWatchCount(key);
-			unwatch();
-		}
-	}
 
 	$rootScope.$on("$locationChangeSuccess", (event, url, oldUrl, newState, oldState)=>{
 		newState = newState?newState:{};
