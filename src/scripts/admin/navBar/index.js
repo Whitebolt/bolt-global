@@ -6,7 +6,8 @@
 		"boltAjax",
 		"boltDirective",
 		"boltUiEvents",
-	($bolt, $ajax, $directive, $events) => {
+		"boltUiState",
+	($bolt, $ajax, $directive, $events, $state) => {
 
 		/**
 		 * @description
@@ -56,7 +57,10 @@
 		}
 
 		function doAction(item, controller=this) {
-			if (item.action) $events.fire(item.action, getData(item), controller);
+			if (item.action) {
+				$events.fire(item.action, getData(item), controller);
+				$state.save();
+			}
 		}
 
 

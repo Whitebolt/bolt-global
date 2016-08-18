@@ -21,6 +21,7 @@
 		function link(scope, root, attributes, controller) {
 			$directive.link({scope, root, controller});
 			$directive.report(controller, directiveName, onHideChange);
+			$directive.report(controller, "stateHide", onStateHideChange);
 		}
 
 		function onHideChange(eventNames, controller) {
@@ -32,8 +33,31 @@
 			}
 		}
 
+		function onStateHideChange(stateHideId, controller) {
+			if (controller._stateHideUnwatch) controller._stateHideUnwatch();
+			if (stateHideId && (stateHideId.trim() !== "")) {
+				controller._stateHideUnwatch = $state.watch(
+					stateHideId.trim(), value=>{
+						showHide(value, controller)
+					}
+				);
+			}
+		}
+
+		function showHide(value, controller) {
+			if (value) {
+				hide(controller);
+			} else {
+				show(controller);
+			}
+		}
+
 		function hide(controller) {
 			if (controller.stateHide && (controller.stateHide.trim() !== "")) $state.set(controller.stateHide, true);
+		}
+
+		function show(controller) {
+			if (controller.stateHide && (controller.stateHide.trim() !== "")) $state.set(controller.stateHide, false);
 		}
 
 

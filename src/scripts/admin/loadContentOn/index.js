@@ -23,13 +23,23 @@
 		function link(scope, root, attributes, controller) {
 			$directive.link({scope, root, controller});
 			$directive.report(controller, directiveName, onRevealChange);
+			$directive.report(controller, "stateData", onStateDataChange);
 		}
 
 		function onRevealChange(eventNames, controller) {
 			if (controller._unwatch) controller._unwatch.forEach(unwatch=>unwatch());
-			if (eventNames.toString().trim() !== "") {
+			if (eventNames && (eventNames.trim() !== "")) {
 				controller._unwatch = eventNames.toString().split(",").map(
 					eventName => $events.on(eventName.trim(), data=>loadContent(data, controller))
+				);
+			}
+		}
+
+		function onStateDataChange(stateDataId, controller) {
+			if (controller._stateDataUnwatch) controller._stateDataUnwatch();
+			if (stateDataId && (stateDataId.trim() !== "")) {
+				controller._stateDataUnwatch = $state.watch(
+					stateDataId, value=>loadContentReady(value, controller)
 				);
 			}
 		}
@@ -41,11 +51,18 @@
 				$ajax
 					.post({src: src, data: {data: data.data}})
 					.then(value => parseContentData(value, controller._previous))
-					.then(value => applyContentData(value, controller))
+					.then(value => showHide(value, controller))
+					.then(value => $bolt.apply({controller, value}))
 					.then(value => afterApplyContent(value, controller));
 			} else {
 				hide(controller);
 			}
+		}
+
+		function loadContentReady(value, controller) {
+			value = parseContentData(value, controller._previous);
+			return $bolt.apply({controller, value})
+				.then(value => afterApplyContent(value, controller))
 		}
 
 		function parseContentData(value, previous={}) {
@@ -59,11 +76,6 @@
 			return value;
 		}
 
-		function applyContentData(value, controller) {
-			showHide(value, controller);
-			return $bolt.apply({controller, value});
-		}
-
 		function afterApplyContent(value, controller) {
 			controller._previous = value;
 			if (controller.stateData && (controller.stateData.trim() !== "")) $state.set(controller.stateData, value);
@@ -75,6 +87,7 @@
 			} else {
 				hide (controller);
 			}
+			return value;
 		}
 
 		function hide(controller) {
