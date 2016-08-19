@@ -30,6 +30,11 @@
 			hide(controller);
 			applyFoundation(controller);
 			applyDimensions(controller);
+
+			controller.inner = angular.element("<div class=\"panel-inner\" load-content-on-target></div>");
+			controller.inner
+				.append(controller.root.children())
+				.appendTo(controller.root);
 		}
 
 		function hide(controller) {

@@ -12,9 +12,10 @@
 </head>
 <body bolt-app="bolt.admin" class="blue">
 
-<nav-bar src="/admin/getMainNavBar"></nav-bar>
+<nav-bar src="/admin/getMainNavBar" ng-cloak></nav-bar>
 <panel
-		width="20" class="leftPanel"
+		ng-cloak
+		width="15" class="leftPanel"
 		src="/admin/getAdminPanel" load-content-on="AdminPanelOpen"
 		hide-on="AdminClearAll,AdminClearLeft"
 		state-hide="leftPanelHide"
@@ -34,216 +35,37 @@
 		</li>
 	</ul>
 </panel>
+<panel
+		ng-cloak
+		width="30" class="middlePanel1"
+		load-content-on="AdminPanel2Open"
+		hide-on="AdminClearAll,AdminClearMiddle1"
+		state-hide="middlePanel1Hide"
+		state-data="middlePanel1Data"
+>
+	<h2>{{loadContentOn.title}}</h2>
 
-
-
-<!--div class="main-nav row show-for-medium-up">
-
-
-
-
-
-	<a
-			class="button" onclick="mainWidth=800; contextMenu.close(); action.close(); selector.close(); components.open();"
-	><img src="http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/32/iPhoto-icon.png" /><span>CMS</span>
-	</a><a class="button" onclick="$('.main-panel').hide(100);">
-		<img src="http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/32/settings-icon.png" /><span>Clear All Panels</span></a><a class="button"><img src="http://icons.iconarchive.com/icons/dakirby309/windows-8-metro/32/Apps-Live-Messenger-Metro-icon.png" /><span>Modules</span></a>
-
-	<span style="color:white; margin-left: 20px;">Width: <span id="w">1000</span>px</span>
-
-
-	<a href="#" class="button right" data-dropdown="drop"><span>Theme</span></a><br>
-	<ul id="drop" class="f-dropdown" data-dropdown-content>
-		<li><a href="#" onclick="theme('blue');">Blue</a></li>
-		<li><a href="#" onclick="theme('red');">Red</a></li>
-		<li><a href="#" onclick="theme('orange');">Orange</a></li>
-		<li><a href="#" onclick="theme('transparent');">Transparent</a></li>
+	<ul class="menu vertical" ng-hide="!loadContentOn.menu">
+		<li ng-repeat="item in loadContentOn.menu">
+			<button class="button" ng-click="panel.doAction(item)">
+				<img ng-src="{{item.iconSrc}}" ng-hide="!item.iconSrc">
+				<div class="menu-item-details">
+					<div class="menu-item-title" ng-hide="!item.title">{{item.title}}</div>
+					<div class="menu-item-subtitle" ng-hide="!item.subTitle">{{item.subTitle}}</div>
+				</div>
+			</button>
+		</li>
 	</ul>
-</div-->
-<div class="main-nav row show-for-small-only">
-	<a class="button small full-width center" style="height: 30px; line-height: 30px; padding: 0px;" onclick="mainWidth = 640; contextMenu.close(); action.close(); selector.close(); components.open();">Menu</a>
-</div>
+</panel>
+<panel
+		ng-cloak
+		width="45" class="middlePanel2"
+		load-content-on="EditorPanelOpen"
+		hide-on="AdminClearAll,EditorPanelClear"
+		state-hide="editorPanel1Hide"
+		state-data="editorPanel1Data"
+></panel>
 
-<div  class="main-panel" id="components">
-	<div style="text-align:center; margin-top: 15px;">
-		<img src="http://icons.iconarchive.com/icons/grafikartes/flat-retro-modern/128/iPhoto-icon.png" alt="">
-		<h2>CMS</h2>
-	</div>
-	<a class="button full-width" onclick="selector.open();">Show Selector</a>
-	<a class="button full-width" onclick="action.open(1000);">Show Action</a>
-	<a class="button full-width" onclick="components.close();">Close This</a>
-</div>
-<div  class="main-panel" id="selector">
-	<div class="row" style="margin-top: 20px;">
-		<div class="columns">
-			<h1>System Pages</h1>
-			<a class="button full-width" onclick="action.open(2000);">Show Action</a>
-
-			<h3>System List</h3>
-			<ul class="selectorList activeList addLines">
-				<li><div class="right text-right" style="font-size: 13px;">Updated: 21/16/1234<br/><span class="prim">Active</span></div><span class="bold">Homepage</span><br/><small>/welcome/home</small></li>
-				<li><div class="right text-right" style="font-size: 13px;">Updated: 11/13/3234<br/><span class="prim">Active</span></div><span class="bold">About the Company</span><br/><small>/welcome/company</small></li>
-				<li><div class="right text-right" style="font-size: 13px;">Updated: 72/61/1544<br/><span class="prim">Active</span></div><span class="bold">Frequently Asked Questions</span><br/><small>/welcome/faq/active-users</small></li>
-				<li><div class="right text-right" style="font-size: 13px;">Updated: 54/61/7536<br/><span class="prim">Active</span></div><span class="bold">Main Contact Form</span><br/><small>/welcome/contact/form/main</small></li>
-			</ul>
-
-
-
-			<h3>System Settings</h3>
-			<ul class="selectorList">
-				<li>
-					<div class="switch tiny round right">
-						<input id="exampleCheckboxSwitch" type="checkbox">
-						<label for="exampleCheckboxSwitch"></label>
-					</div>
-					<span>Turn on the special features</span>
-				</li>
-				<li>
-					<div class="switch tiny round right">
-						<input id="exampleCheckbox1" type="checkbox" checked>
-						<label for="exampleCheckbox1"></label>
-					</div>
-					<span>Run through the system</span>
-				</li>
-				<li>
-					<div class="switch tiny round right">
-						<input id="exampleCheckbox2" type="checkbox">
-						<label for="exampleCheckbox2"></label>
-					</div>
-					<span>Normalize Global Pressure</span>
-				</li>
-				<li>
-					<div class="switch tiny round right">
-						<input id="exampleCheckbox3" type="checkbox">
-						<label for="exampleCheckbox3"></label>
-					</div>
-					<span>Find The Hope Of The World</span>
-				</li>
-			</ul>
-
-
-			<h3>Random Nice Table</h3>
-
-			<ul class="pricing-table">
-				<li class="title">Standard</li>
-				<li class="price">$99.99</li>
-				<li class="description">An awesome description</li>
-				<li class="bullet-item">1 Database</li>
-				<li class="bullet-item">5GB Storage</li>
-				<li class="bullet-item">20 Users</li>
-				<li class="cta-button"><a class="button" href="#">Buy Now</a></li>
-			</ul>
-			<a class="button radius" onclick="selector.close();">Close This</a>
-		</div>
-	</div>
-</div>
-<div  class="main-panel" id="action">
-	<div class="row" style="margin-top: 20px;">
-		<div class="columns">
-			<a onclick="contextMenu.open();"><img style="float: right; margin-left: 15px;" src="http://icons.iconarchive.com/icons/icons8/windows-8/32/Very-Basic-Menu-icon.png"></a>
-			<a id="min" style="display: none;" onclick="action.open(600); $('#max').show(); $(this).hide();"><img style="float: right; margin-left: 15px;" src="http://icons.iconarchive.com/icons/iconsmind/outline/32/Minimize-icon.png"></a>
-			<a id="max" onclick="action.open(2000); $('#min').show(); $(this).hide();"><img style="float: right; margin-left: 15px;" src="http://icons.iconarchive.com/icons/iconsmind/outline/32/Maximize-icon.png"></a>
-			<h1>Lorem Ipsum</h1>
-
-			<ul class="breadcrumbs">
-				<li><a href="#">Home</a></li>
-				<li><a href="#">Features</a></li>
-				<li class="unavailable"><a href="#">Gene Splicing</a></li>
-				<li class="current"><a href="#">Cloning</a></li>
-			</ul>
-
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed fringilla ex. Vivamus feugiat a sem sit amet condimentum. Nam feugiat, velit et vehicula efficitur, felis orci euismod eros, a feugiat enim neque in urna. In facilisis elementum ligula, nec rhoncus sem iaculis nec. Praesent tincidunt, risus a ultricies interdum, velit sapien accumsan ligula, ut euismod elit tortor sollicitudin erat. Mauris tempus, sem a faucibus eleifend, ligula enim feugiat nibh, vel iaculis augue urna ac augue. Ut vel lacus vel nisi consectetur gravida. Nunc at ultricies nunc. Donec mollis quam neque, eu scelerisque sapien ornare eu. Curabitur ullamcorper eleifend imperdiet. Pellentesque gravida sit amet odio non gravida.</p>
-
-			<p>In hac habitasse platea dictumst. Praesent eu tincidunt urna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque scelerisque bibendum turpis ac interdum. Donec non tortor non orci faucibus egestas et ut enim. Donec mi lacus, pharetra at orci at, consequat lobortis odio. Vestibulum libero nisl, aliquam ut gravida eu, sodales id augue. Vestibulum egestas, turpis in lobortis cursus, quam elit consectetur turpis, ut faucibus neque erat sit amet felis.</p>
-
-			<p>Pellentesque sodales fermentum nulla, vel cursus nisi porta et. Morbi et ipsum vitae elit aliquam tempor. Aliquam ut erat molestie, feugiat turpis vel, suscipit sapien. Curabitur condimentum sapien quis tortor pellentesque, ac fermentum metus consectetur. Proin eget ligula id ante pulvinar luctus. Fusce mattis semper tempus. Pellentesque sapien orci, feugiat at sollicitudin nec, efficitur et lorem. Nam porttitor id massa ac dapibus.</p>
-
-			<table>
-				<thead>
-				<tr>
-					<th width="200">Table Header</th>
-					<th>Table Header</th>
-					<th width="150">Table Header</th>
-					<th width="150">Table Header</th>
-				</tr>
-				</thead>
-				<tbody>
-				<tr>
-					<td>Content Goes Here</td>
-					<td>This is longer content Donec id elit non mi porta gravida at eget metus.</td>
-					<td>Content Goes Here</td>
-					<td>Content Goes Here</td>
-				</tr>
-				<tr>
-					<td>Content Goes Here</td>
-					<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-					<td>Content Goes Here</td>
-					<td>Content Goes Here</td>
-				</tr>
-				<tr>
-					<td>Content Goes Here</td>
-					<td>This is longer Content Goes Here Donec id elit non mi porta gravida at eget metus.</td>
-					<td>Content Goes Here</td>
-					<td>Content Goes Here</td>
-				</tr>
-				</tbody>
-			</table>
-
-			<p>Cras suscipit volutpat ex vitae imperdiet. Maecenas accumsan lectus in mauris dignissim, sed dictum turpis commodo. Vivamus convallis in lectus sed tincidunt. Nunc sed arcu sit amet nisl porta tristique. Cras in nunc suscipit, luctus turpis a, laoreet velit. Cras non nisi mauris. Fusce ultrices id ligula non luctus. Sed aliquet magna vitae arcu sodales aliquet. Nam sit amet sem bibendum, efficitur sapien et, efficitur eros. Etiam gravida efficitur aliquet. Curabitur tempus eget purus sed volutpat. Vestibulum et odio id ante imperdiet feugiat eu eu ex. Quisque ullamcorper dolor sapien, in ornare lacus posuere quis.</p>
-
-			<h2>More paragraphs</h2>
-
-			<p>Praesent aliquam, odio eu rhoncus gravida, metus lectus varius velit, eget pellentesque tortor sem vel augue. Maecenas vitae ornare leo. Duis tincidunt mollis magna, ac fringilla tellus gravida vel. Nullam id maximus orci. Fusce pharetra ex non lacinia ullamcorper. Sed porta, sapien sit amet ultrices porttitor, magna urna facilisis metus, vitae maximus mauris tortor ac erat. Vivamus ac lacus ut ante hendrerit accumsan. Duis cursus rhoncus justo ac pharetra. Sed pretium ultrices sollicitudin.</p>
-
-			<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam sed fringilla ex. Vivamus feugiat a sem sit amet condimentum. Nam feugiat, velit et vehicula efficitur, felis orci euismod eros, a feugiat enim neque in urna. In facilisis elementum ligula, nec rhoncus sem iaculis nec. Praesent tincidunt, risus a ultricies interdum, velit sapien accumsan ligula, ut euismod elit tortor sollicitudin erat. Mauris tempus, sem a faucibus eleifend, ligula enim feugiat nibh, vel iaculis augue urna ac augue. Ut vel lacus vel nisi consectetur gravida. Nunc at ultricies nunc. Donec mollis quam neque, eu scelerisque sapien ornare eu. Curabitur ullamcorper eleifend imperdiet. Pellentesque gravida sit amet odio non gravida.</p>
-
-			<p>In hac habitasse platea dictumst. Praesent eu tincidunt urna. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque scelerisque bibendum turpis ac interdum. Donec non tortor non orci faucibus egestas et ut enim. Donec mi lacus, pharetra at orci at, consequat lobortis odio. Vestibulum libero nisl, aliquam ut gravida eu, sodales id augue. Vestibulum egestas, turpis in lobortis cursus, quam elit consectetur turpis, ut faucibus neque erat sit amet felis.</p>
-
-			<p>Pellentesque sodales fermentum nulla, vel cursus nisi porta et. Morbi et ipsum vitae elit aliquam tempor. Aliquam ut erat molestie, feugiat turpis vel, suscipit sapien. Curabitur condimentum sapien quis tortor pellentesque, ac fermentum metus consectetur. Proin eget ligula id ante pulvinar luctus. Fusce mattis semper tempus. Pellentesque sapien orci, feugiat at sollicitudin nec, efficitur et lorem. Nam porttitor id massa ac dapibus.</p>
-
-			<p>Cras suscipit volutpat ex vitae imperdiet. Maecenas accumsan lectus in mauris dignissim, sed dictum turpis commodo. Vivamus convallis in lectus sed tincidunt. Nunc sed arcu sit amet nisl porta tristique. Cras in nunc suscipit, luctus turpis a, laoreet velit. Cras non nisi mauris. Fusce ultrices id ligula non luctus. Sed aliquet magna vitae arcu sodales aliquet. Nam sit amet sem bibendum, efficitur sapien et, efficitur eros. Etiam gravida efficitur aliquet. Curabitur tempus eget purus sed volutpat. Vestibulum et odio id ante imperdiet feugiat eu eu ex. Quisque ullamcorper dolor sapien, in ornare lacus posuere quis.</p>
-
-			<p>Praesent aliquam, odio eu rhoncus gravida, metus lectus varius velit, eget pellentesque tortor sem vel augue. Maecenas vitae ornare leo. Duis tincidunt mollis magna, ac fringilla tellus gravida vel. Nullam id maximus orci. Fusce pharetra ex non lacinia ullamcorper. Sed porta, sapien sit amet ultrices porttitor, magna urna facilisis metus, vitae maximus mauris tortor ac erat. Vivamus ac lacus ut ante hendrerit accumsan. Duis cursus rhoncus justo ac pharetra. Sed pretium ultrices sollicitudin.</p>
-
-			<p style="margin-top: 10px;"><a class="button small radius full-width" onclick="contextMenu.open();">Show Context Menu</a></p>
-		</div>
-	</div>
-</div>
-<div  class="main-panel" id="contextMenu">
-	<a class="button full-width" onclick="contextMenu.close();">Close</a>
-	<div class="row">
-		<div class="columns">
-			<h3>Settings</h3>
-			<ul class="selectorList">
-				<li>
-					<div class="switch tiny round right">
-						<input id="exampleCheckboxSwitch6" type="checkbox">
-						<label for="exampleCheckboxSwitch6"></label>
-					</div>
-					<span>Auto-Save</span>
-				</li>
-				<li>
-					<div class="switch tiny round right">
-						<input id="exampleCheckboxSwitch7" checked type="checkbox">
-						<label for="exampleCheckboxSwitch7"></label>
-					</div>
-					<span>Live View</span>
-				</li>
-				<li>
-					<label>Permalink</label>
-					<input type="text" placeholder="Permalink" value="welcome" />
-				</li>
-				<li><label for="">View</label><select name="" id="">
-						<option value="">Default</option>
-						<option value="">Minimal</option>
-						<option value="">Full Width</option>
-					</select></li>
-			</ul>
-			<p>This is the ContextMenu for the Action panel</p>
-			<a class="button full-width radius">Publish</a>
-		</div>
-	</div>
-</div>
 </body>
 <script src="/lib/jquery/dist/jquery.min.js"></script>
 <script src="/lib/jqte/jQuery-TE_v.1.3.2/jquery-te-1.3.2.min.js"></script>

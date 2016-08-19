@@ -76,20 +76,24 @@ let exported = {
 					},
 					menu: [{
 						title: "Pages",
-						action: "SelectorPanelOpen",
-						data: "CMS/Pages"
+						action: "AdminPanel2Open",
+						data: "*",
+						src: "/admin/pages/getPages"
 					}, {
 						title: "Blog",
-						action: "SelectorPanelOpen",
-						data: "CMS/Pages"
+						action: "AdminPanel2Open",
+						data: "*",
+						src: "/admin/blog/getBlog"
 					}, {
 						title: "Menus",
-						action: "SelectorPanelOpen",
-						data: "CMS/Pages"
+						action: "AdminPanel2Open",
+						data: "*",
+						src: "/admin/menu/getMenus"
 					}, {
 						title: "Users",
-						action: "SelectorPanelOpen",
-						data: "CMS/Pages"
+						action: "AdminPanel2Open",
+						data: "*",
+						src: "/admin/users/getUsers"
 					}]
 
 				});

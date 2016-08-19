@@ -7,7 +7,8 @@
 		"boltDirective",
 		"boltUiEvents",
 		"boltUiState",
-	($bolt, $ajax, $directive, $events, $state) => {
+		"$compile",
+	($bolt, $ajax, $directive, $events, $state, $compile) => {
 
 		/**
 		 * @description
@@ -66,6 +67,7 @@
 		}
 
 		function parseContentData(value, previous={}) {
+			if (angular.isString(value)) return {content: value};
 			Object.keys(previous).forEach(key=>{
 				if (!value.hasOwnProperty(key)) {
 					value[key] = undefined;
@@ -79,6 +81,19 @@
 		function afterApplyContent(value, controller) {
 			controller._previous = value;
 			if (controller.stateData && (controller.stateData.trim() !== "")) $state.set(controller.stateData, value);
+			if (value && value.content) updateHtmlContent(value.content, controller);
+		}
+
+		function updateHtmlContent(content, controller) {
+			if (controller.current) controller.current.$destroy();
+			let target = controller.root.find("[load-content-on-target]");
+			target = (target.length?angular.element(target.get(0)):controller.root);
+
+			$directive.destroyChildren(controller.root);
+			target.empty().html(content);
+			controller.current = controller.parent.$new();
+			$compile(target.contents())(controller.current);
+			controller._previous = content;
 		}
 
 		function showHide(value, controller) {
