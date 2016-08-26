@@ -1,1 +1,1 @@
-angular.module("bolt.admin", ["bolt"]);
+angular.module("bolt.admin", ["bolt", "textAngular"]);

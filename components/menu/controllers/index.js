@@ -32,10 +32,13 @@ function getMenu(menuName, req) {
 
 let exported = {
 	index: function(component) {
+		console.log("Calling Global");
 		let doc = component.doc || component.req.doc || {};
 		let parent = component.parent || {};
 		let menuName = parent.menu || "main";
 		let viewName = parent.subMenu?"menu/sub":"menu/index";
+
+
 
 		if (!doc.menu || parent._reloadMenu) {
 			return getMenu(menuName, component.req).then(blah =>
@@ -46,5 +49,9 @@ let exported = {
 		}
 	}
 };
+
+Object.keys(exported).forEach(methodName => {
+	exported[methodName].root = "Global";
+});
 
 module.exports = exported;
