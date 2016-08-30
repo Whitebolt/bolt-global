@@ -17,28 +17,52 @@ function setActive(doc, items) {
   return itemSet;
 }
 
-function getMenu(menuName, req) {
-  return req.app.db.collection('menus').findOne({"name": menuName}).then(doc => {
-    if (doc) {
-      req.doc.menu = doc;
-      setActive(req.doc, doc.items)
-    }
+function filterUndef(items) {
+	return items.filter(item=>{
+		if (!item) return false;
+		return true;
+	});
+}
 
-    return {};
-  }, err => {
-    return {};
-  });
+function filterMenu(doc, db, session) {
+	return Promise.all((doc.items || []).map(item=>{
+		return bolt.getPath({path: item.path, db, accessLevel:'read', session}).then(doc=>{
+			if (doc === undefined) return undefined;
+			return ((item.items) ? filterMenu(item, db, session).then(items=>{
+				item.items = items;
+				return item;
+			}) : item);
+		});
+	})).then(items=>filterUndef(items));
+}
+
+function getMenu(menuName, req) {
+	return req.app.db.collection('menus')
+		.findOne({"name": menuName})
+		.then(doc=>{
+			return filterMenu(doc, req.app.db, req.session).then(items=>{
+				doc.items = items;
+				return doc;
+			});
+		})
+		.then(doc=>{
+			if (doc) {
+				req.doc.menu = doc;
+				setActive(req.doc, doc.items)
+			}
+
+			return {};
+		}, err => {
+			return {};
+		});
 }
 
 let exported = {
 	index: function(component) {
-		console.log("Calling Global");
 		let doc = component.doc || component.req.doc || {};
 		let parent = component.parent || {};
 		let menuName = parent.menu || "main";
 		let viewName = parent.subMenu?"menu/sub":"menu/index";
-
-
 
 		if (!doc.menu || parent._reloadMenu) {
 			return getMenu(menuName, component.req).then(blah =>

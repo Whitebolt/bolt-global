@@ -3,9 +3,12 @@
 let exported = {
   index: function(component) {
     let req = component.req;
-    return req.app.db.collection('pages').findOne({
-      'path': bolt.getPathFromRequest(req)
-    }).then(doc => {
+
+    return bolt.getPath({
+      path: bolt.getPathFromRequest(req),
+      db: req.app.db,
+      session: req.session
+    }).then(doc=>{
       if (!doc) {
         throw "Document not found in Database";
       }

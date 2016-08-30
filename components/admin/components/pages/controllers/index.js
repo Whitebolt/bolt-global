@@ -44,20 +44,6 @@ function getPage(component) {
 	return component;
 }
 
-function getPageOLD(component, id) {
-	let req = component.req;
-	let doc = component.doc = component.doc || {};
-
-	return req.app.db.collection('pages').findOne({
-		_id: bolt.mongoId(id)
-	}).then(page => {
-		doc.page = page;
-		doc.viewEditor = '/admin/pages/editor';
-
-		return component;
-	});
-}
-
 
 let exported = {
 	getPages, getPage
