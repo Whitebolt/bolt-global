@@ -1,17 +1,22 @@
-<form>
+<form name="editor" novalidate>
 	<div class="row columns small-12">
 		<label>Title
-			<input type="text" name="title" placeholder="Page Title" value="<%- doc.page.title %>">
+			<input type="text" name="title" placeholder="Page Title" value="<%- doc.page.title %>" ng-model="title">
 		</label>
 	</div>
 	<div class="row columns small-12">
 		<label>Content
-			<textarea text-angular name="content" rows="8"><%- doc.page.content %></textarea>
+			<text-angular
+					name="content"
+					rows="8"
+					ta-toolbar-button-class="button"
+					ta-toolbar-group-class="button-group"
+					ta-text-editor-class="wysiwyg-editor"><%- doc.page.content %></text-angular>
 		</label>
 	</div>
 	<div class="row columns small-12">
 		<label>Path
-			<input type="text" name="path" placeholder="Page Title" value="<%- doc.page.path %>">
+			<input type="text" name="path" placeholder="Page Title" value="<%- doc.page.path %>" ng-model="path">
 		</label>
 	</div>
 
