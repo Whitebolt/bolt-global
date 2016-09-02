@@ -1,26 +1,44 @@
-<form name="editor" novalidate>
+<form bolt-form name="editor" novalidate action="/admin/pages/pageUpdate">
 	<div class="row columns small-12">
 		<label>Title
-			<input type="text" name="title" placeholder="Page Title" value="<%- doc.page.title %>" ng-model="title">
+			<input type="text" name="title" placeholder="Page Title" value="<%-doc.page.title%>" ng-model="editor.title">
 		</label>
 	</div>
 	<div class="row columns small-12">
 		<label>Content
-			<text-angular
+			<textarea
 					name="content"
 					rows="8"
-					ta-toolbar-button-class="button"
-					ta-toolbar-group-class="button-group"
-					ta-text-editor-class="wysiwyg-editor"><%- doc.page.content %></text-angular>
+					ui-tinymce="boltApp.tinymceOptions"
+					ng-model="editor.content"
+			><%-doc.page.content%></textarea>
 		</label>
 	</div>
 	<div class="row columns small-12">
 		<label>Path
-			<input type="text" name="path" placeholder="Page Title" value="<%- doc.page.path %>" ng-model="path">
+			<input type="text" name="path" placeholder="Page Title" value="<%-doc.page.path%>" ng-model="editor.path">
 		</label>
 	</div>
 
+	<input class="ng-hide" type="text" name="_id" value="<%-doc.page._id%>" ng-model="editor._id">
+
 	<div class="row columns small-12">
-		<button type="button" class="success button">Save</button>
+		<button type="button" class="success button" ng-click="editor.validate()">Save</button>
 	</div>
+	<script type="controller/method" name="validate" params="$ajax" inject="boltAjax">
+		"use strict";
+
+		var form = this;
+
+
+		$ajax.post({
+			src: form.root.attr("action"),
+			data: {
+				_id: form._id,
+				path: form.path,
+				content: form.content,
+				title: form.title
+			}
+		});
+	</script>
 </form>

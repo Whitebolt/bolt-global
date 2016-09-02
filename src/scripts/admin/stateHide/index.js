@@ -46,7 +46,7 @@
 		}
 
 
-		function stateHide() {
+		function stateHideController() {
 			let controller = this;
 			controller._name = directiveName + "Controller";
 		}
@@ -55,7 +55,7 @@
 			restrict: "A",
 			controllerAs: directiveName,
 			scope: true,
-			controller: [stateHide],
+			controller: [stateHideController],
 			bindToController: {
 				stateHide: "@"
 			},

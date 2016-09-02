@@ -1,1 +1,43 @@
-{"name":"bolt-global","version":"0.0.1","description":"Global bolt folder","homepage":"http://aaron.whitebolt/team-dev/angular-big-gallery","main":"index.js","author":"Whitebolt <hello@whitebolt.net>","private":false,"contributors":[{"name":"Stephen Simpson","email":"stephen@whitebolt.net"},{"name":"Kristjan Allikas","email":"kris@whitebolt.net"}],"repository":{"type":"git","url":"git@aaron.whitebolt:team-dev/angular-big-gallery.git"},"dependencies":{"es5-shim":"^4.5.7","es6-shim":"^0.35.0","jquery":"^2.2.3","what-input":"^2.0.1","jqte":"*","angular-allery-menu":"git@aaron.whitebolt:team-dev/angular-allery-menu.git","animate.css":"^3.5.2","foundation-sites":"^6.2.0","angular-bolt":"git@aaron.whitebolt:bolt/angular-bolt.git"},"devDependencies":{},"ignore":[],"keywords":["angular","gallary"],"license":"SEE LICENSE IN LICENSE.md"}
+{
+  "name": "bolt-global",
+  "version": "0.0.1",
+  "description": "Global bolt folder",
+  "homepage": "http://aaron.whitebolt/team-dev/angular-big-gallery",
+  "main": "index.js",
+  "author": "Whitebolt <hello@whitebolt.net>",
+  "private": false,
+  "contributors": [
+    {
+      "name": "Stephen Simpson",
+      "email": "stephen@whitebolt.net"
+    },
+    {
+      "name": "Kristjan Allikas",
+      "email": "kris@whitebolt.net"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@aaron.whitebolt:team-dev/angular-big-gallery.git"
+  },
+  "dependencies": {
+    "es5-shim": "^4.5.7",
+    "es6-shim": "^0.35.0",
+    "jquery": "^2.2.3",
+    "what-input": "^2.0.1",
+    "angular-allery-menu": "git@aaron.whitebolt:team-dev/angular-allery-menu.git",
+    "animate.css": "^3.5.2",
+    "foundation-sites": "^6.2.0",
+    "angular-bolt": "git@aaron.whitebolt:bolt/angular-bolt.git",
+    "angular-ui-tinymce": "^0.0.16",
+    "angular-auto-value": "^3.0.0",
+    "tinymce": "^4.4.2"
+  },
+  "devDependencies": {},
+  "ignore": [],
+  "keywords": [
+    "angular",
+    "gallary"
+  ],
+  "license": "SEE LICENSE IN LICENSE.md"
+}

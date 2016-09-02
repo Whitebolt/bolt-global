@@ -36,6 +36,7 @@
     "./src/scripts/admin/panel/index.js",
     "./src/scripts/admin/navBar/index.js",
     "./src/scripts/admin/badge/index.js",
+    "./src/scripts/admin/form/index.js",
     "./src/scripts/admin/bootstrap.js"
   ],
   "scripts": {

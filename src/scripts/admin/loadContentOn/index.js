@@ -91,7 +91,7 @@
 
 			$directive.destroyChildren(controller.root);
 			target.empty().html(content);
-			controller.current = controller.parent.$new();
+			controller.current = controller.parent.$new(false, controller.parent);
 			$compile(target.contents())(controller.current);
 			controller._previous = content;
 		}

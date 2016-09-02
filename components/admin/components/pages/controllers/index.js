@@ -44,9 +44,27 @@ function getPage(component) {
 	return component;
 }
 
+function pageUpdate(component) {
+	let req = component.req;
+
+	console.log(req.body);
+	if ((req.method.toLowerCase() === 'post') && req.body && req.body._id) {
+		let doc = Object.assign({}, req.body);
+		delete doc._id;
+		return req.app.db.collection('pages').update({
+			_id: bolt.mongoId(req.body._id)
+		}, doc).then(result=>{
+			console.log(result);
+			return component;
+		})
+	}
+
+	return component;
+}
+
 
 let exported = {
-	getPages, getPage
+	getPages, getPage, pageUpdate
 };
 
 module.exports = exported;

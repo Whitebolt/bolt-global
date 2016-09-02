@@ -1,5 +1,4 @@
 @import "../../public/lib/angular/angular-csp.css";
-@import "../../public/lib/textAngular/dist/textAngular.css";
 @import "../../public/lib/font-awesome/scss/font-awesome";
 @import "./_settings";
 @import "foundation";
@@ -147,24 +146,6 @@ panel.middlePanel2, [panel].middlePanel2 {
 	box-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
 }
 
-text-angular, [text-angular] {
-	.wysiwyg-editor {
-		background: $input-background;
-		border: $input-border;
-		box-shadow: $input-shadow;
-		-moz-box-shadow: $input-shadow;
-		-webkit-box-shadow: $input-shadow;
-
-		&:focus, &:active {
-			background: $input-background-focus;
-			border: $input-border-focus;
-			box-shadow: $input-shadow-focus;
-			-moz-box-shadow: $input-shadow-focus;
-			-webkit-box-shadow: $input-shadow-focus;
-		}
-	}
-}
-
 @mixin theme-colors($prim, $bg, $nav-bar, $nav-button) {
 	background: $bg;
 	background: url('/media/admin/bg.jpg'); background-size: cover;
@@ -191,28 +172,6 @@ text-angular, [text-angular] {
 
 	.button:hover { background: scale-color($bg, $lightness: -30%); }
 	.button { background: $prim; color: white; }
-
-	text-angular, [text-angular] {
-		.btn-toolbar {
-			.button-group {
-				margin-bottom: $spacer/10;
-			}
-
-			.button {
-				background: rgba($prim, 0.8);
-				opacity: 1;
-				padding: $spacer/5;
-
-				&[name="wordcount"],&[name="charcount"] {
-					background: transparent;
-					color: white;
-					font-weight: bold;
-					text-align: left;
-					margin-bottom: $spacer/5;
-				}
-			}
-		}
-	}
 
 	#components   {
 		background: scale-color($bg, $lightness: -50%);
