@@ -1,0 +1,39 @@
+<form bolt-form name="editor" novalidate action="/admin/users/userUpdate">
+	<div class="row columns small-12">
+		<label>Name
+			<input type="text" name="name" placeholder="Name" value="<%-doc.user.name%>" ng-model="editor.name">
+		</label>
+	</div>
+	<div class="row columns small-12">
+		<label>Username
+			<input type="text" name="username" placeholder="Username" value="<%-doc.user.userName%>" ng-model="editor.userName">
+		</label>
+	</div>
+	<div class="row columns small-12">
+		<label>Username
+			<input type="text" name="accountEmail" placeholder="Account email" value="<%-doc.user.accountEmail%>" ng-model="editor.accountEmail">
+		</label>
+	</div>
+
+	<input class="ng-hide" type="text" name="_id" value="<%-doc.user._id%>" ng-model="editor._id">
+
+	<div class="row columns small-12">
+		<button type="button" class="success button" ng-click="editor.validate()">Save</button>
+	</div>
+	<script type="controller/method" name="validate" params="$ajax" inject="boltAjax">
+		"use strict";
+
+		var form = this;
+
+
+		$ajax.post({
+			src: form.root.attr("action"),
+			data: {
+				_id: form._id,
+				name: form.name,
+				userName: form.userName,
+				accountEmail: form.accountEmail
+			}
+		});
+	</script>
+</form>

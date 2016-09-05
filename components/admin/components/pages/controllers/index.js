@@ -6,9 +6,13 @@ function getPages(component) {
 	let req = component.req;
 	let dbConditions = {_id: true, title: true, path: true};
 
-	return req.app.db.collection('pages').find({}, dbConditions).toArray()
+	return bolt.getDocs({
+		query: {},
+		projection: ['_id', 'title', 'path'],
+		req,
+		filterByVisibility: false
+	}).filter(doc=>bolt.isAuthorised({id:doc._id, req, accessLevel: 'edit'}))
 		.then(docs => docs.sort((a,b)=>((a.title>b.title)?1:((a.title<b.title)?-1:0))))
-		.filter(doc=>bolt.isAuthorised({id:doc._id, req, accessLevel: 'edit'}))
 		.map(constructPagesAdminMenuData)
 		.then(menu => component.res.json({
 			title: "Pages",
@@ -31,9 +35,8 @@ function getPage(component) {
 	let doc = component.doc = component.doc || {};
 
 	if ((req.method.toLowerCase() === 'post') && req.body && req.body.data) {
-		return req.app.db.collection('pages').findOne({
-			_id: bolt.mongoId(req.body.data)
-		}).then(page => {
+		let id = req.body.data;
+		return bolt.getDoc({req, id, accessLevel:'edit', filterByVisibility: false}).then(page => {
 			doc.page = page;
 			component.view = 'editor';
 			component.done = true;
