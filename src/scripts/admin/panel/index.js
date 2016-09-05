@@ -78,7 +78,14 @@
 		}
 
 		function doAction(item, controller=this) {
-			if (item.action) $events.fire(item.action, getData(item), controller);
+			if (item.action) {
+				(Array.isArray(item.action) ? item.action : item.action.split(','))
+					.filter(action=>action.trim())
+					.forEach(action=>{
+						console.log("FIRING", action);
+						$events.fire(action, getData(item), controller)
+					})
+			}
 		}
 
 

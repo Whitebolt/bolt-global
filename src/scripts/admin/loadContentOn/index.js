@@ -45,8 +45,44 @@
 			}
 		}
 
+		function rndId() {
+			return (!Date.now ? (new Date()).getTime() : Date.now()).toString();
+		}
+
+		function _addQueryParam(queryString, pkey, pvalue) {
+			let query = {};
+			let order = queryString.split('&').map(param=>{
+				let pparts = param.split('=');
+				let key = pparts.shift();
+				query[key] = ((pparts.length > 0) ? pparts.join('=') : undefined);
+				return key;
+			});
+			if (!query.hasOwnProperty(pkey)) order.push(pkey);
+			query[pkey] = pvalue;
+
+			return order
+				.map(key=>(key + ((query[key] !== undefined) ? "=" + query[key] : "")))
+				.join("&");
+		}
+
+		function addQueryParam(url, pkey, pvalue) {
+			let parts = url.split("?");
+			if (parts.length > 1) {
+				parts[1] = _addQueryParam(parts[1], pkey, pvalue);
+				return parts.join('?');
+			} else {
+				let parts = url.split("#");
+				if (parts.length > 1) {
+					parts[0] += '?' + _addQueryParam("", pkey, pvalue);
+					return parts.join('#');
+				} else {
+					return url + '?' + _addQueryParam("", pkey, pvalue);
+				}
+			}
+		}
+
 		function loadContent(data, controller) {
-			let src = data.src || controller.src;
+			let src = addQueryParam(data.src || controller.src, 'cacheBust', rndId());
 
 			if (data && src) {
 				$ajax

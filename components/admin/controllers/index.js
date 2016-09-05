@@ -76,26 +76,25 @@ let exported = {
 					},
 					menu: [{
 						title: "Pages",
-						action: "AdminPanel2Open",
+						action: "AdminPanel2Open,EditorPanelClear",
 						data: "*",
 						src: "/admin/pages/getPages"
 					}, {
 						title: "Blog",
-						action: "AdminPanel2Open",
+						action: "AdminPanel2Open,EditorPanelClear",
 						data: "*",
 						src: "/admin/blog/getBlog"
 					}, {
 						title: "Menus",
-						action: "AdminPanel2Open",
+						action: "AdminPanel2Open,EditorPanelClear",
 						data: "*",
 						src: "/admin/menu/getMenus"
 					}, {
 						title: "Users",
-						action: "AdminPanel2Open",
+						action: "AdminPanel2Open,EditorPanelClear",
 						data: "*",
 						src: "/admin/users/getUsers"
 					}]
-
 				});
 			} else if (req.body.data === 'modules') {
 				component.res.json({
