@@ -4,10 +4,8 @@ let exported = {
   index: function(component) {
     let req = component.req;
 
-    return bolt.getPath({
-      path: bolt.getPathFromRequest(req),
-      db: req.app.db,
-      session: req.session
+    return bolt.getDoc({
+      query: {path: bolt.getPathFromRequest(req)}, req
     }).then(doc=>{
       if (!doc) {
         throw "Document not found in Database";

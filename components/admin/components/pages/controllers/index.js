@@ -8,6 +8,7 @@ function getPages(component) {
 
 	return req.app.db.collection('pages').find({}, dbConditions).toArray()
 		.then(docs => docs.sort((a,b)=>((a.title>b.title)?1:((a.title<b.title)?-1:0))))
+		.filter(doc=>bolt.isAuthorised({id:doc._id, req, accessLevel: 'edit'}))
 		.map(constructPagesAdminMenuData)
 		.then(menu => component.res.json({
 			title: "Pages",

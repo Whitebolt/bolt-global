@@ -26,7 +26,7 @@ function filterUndef(items) {
 
 function filterMenu(doc, db, session) {
 	return Promise.all((doc.items || []).map(item=>{
-		return bolt.getPath({path: item.path, db, accessLevel:'read', session}).then(doc=>{
+		return bolt.getDoc({query: {path: item.path}, db, accessLevel:'read', session}).then(doc=>{
 			if (doc === undefined) return undefined;
 			return ((item.items) ? filterMenu(item, db, session).then(items=>{
 				item.items = items;
