@@ -44,6 +44,18 @@ function getPage(component) {
 	return component;
 }
 
+function _createUpdateSet(doc, tag='') {
+	let setter = {};
+	Object.keys(doc).forEach(fieldName=>{
+		if (!bolt.isPlainObject(doc[fieldName])) {
+			setter[fieldName] = doc[fieldName];
+		} else {
+			setter[fieldName] = createUpdateSet(setter[fieldName], tag + '.' + fieldName);
+		}
+	});
+	return setter;
+}
+
 function pageUpdate(component) {
 	let req = component.req;
 	if ((req.method.toLowerCase() === 'post') && req.body && req.body._id) {
@@ -51,20 +63,16 @@ function pageUpdate(component) {
 		let doc = Object.assign({}, req.body);
 
 		return bolt.isAuthorised({id, req, accessLevel: 'edit'}).then(isAuthorised=>{
-			if (isAuthorised) {
-				let _doc = bolt.authorisedFieldsMap(doc, req.session, 'edit');
-				delete doc._id;
+			if (!isAuthorised) return component;
+			let _doc = bolt.removeUnauthorisedFields({doc, req, accessLevel:'edit'});
+			delete _doc._id;
 
-				return req.app.db.collection('pages').update({
-					_id: bolt.mongoId(id)
-				}, _doc).then(result=>{
-					console.log(result);
-					return component;
-				});
-			} else {
-				return component;
-			}
-		});
+			return req.app.db.collection('pages').update({
+				_id: bolt.mongoId(id)
+			}, {
+				$set: _createUpdateSet(_doc)
+			});
+		}).then(result=>component);
 	}
 
 	return component;
