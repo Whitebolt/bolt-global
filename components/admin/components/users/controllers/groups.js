@@ -1,13 +1,13 @@
 'use strict';
 
-function getMenus(component) {
+function getGroups(component) {
 	let req = component.req;
 
 	return bolt.getDocs({
 		query: {},
-		projection: ['_id', 'name', 'items'],
+		projection: ['_id', 'name', 'users'],
 		req,
-		collection: 'menus',
+		collection: 'groups',
 		filterByVisibility: false
 	}).then(
 		docs => docs.sort((a,b)=>((a.name>b.name)?1:((a.name<b.name)?-1:0)))
@@ -23,11 +23,11 @@ function constructPagesAdminMenuData(doc) {
 		title: doc.name,
 		action: "EditorPanelOpen",
 		data: doc._id,
-		subTitle: "No. of items: " + doc.items.length.toString(),
-		src: "/admin/menus/getMenu"
+		subTitle: "No. of users: " + doc.users.length.toString(),
+		src: "/admin/users/groups/getGroup"
 	};
 }
 
 module.exports = {
-	getMenus
+	getGroups
 };

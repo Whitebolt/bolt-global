@@ -80,20 +80,20 @@ let exported = {
 						data: "*",
 						src: "/admin/pages/getPages"
 					}, {
-						title: "Blog",
-						action: "AdminPanel2Open,EditorPanelClear",
-						data: "*",
-						src: "/admin/blog/getBlog"
-					}, {
 						title: "Menus",
 						action: "AdminPanel2Open,EditorPanelClear",
 						data: "*",
-						src: "/admin/menu/getMenus"
+						src: "/admin/menus/getMenus"
 					}, {
 						title: "Users",
 						action: "AdminPanel2Open,EditorPanelClear",
 						data: "*",
 						src: "/admin/users/getUsers"
+					}, {
+						title: "Groups",
+						action: "AdminPanel2Open,EditorPanelClear",
+						data: "*",
+						src: "/admin/users/groups/getGroups"
 					}]
 				});
 			} else if (req.body.data === 'modules') {

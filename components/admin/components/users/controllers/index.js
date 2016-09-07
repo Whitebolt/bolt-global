@@ -5,12 +5,12 @@ function getUsers(component) {
 
 	return bolt.getDocs({
 		query: {},
-		projection: ['_id', 'userName', 'accountEmail'],
+		projection: ['_id', 'userName', 'accountEmail', 'name'],
 		req,
 		collection: 'users',
 		filterByVisibility: false
 	}).then(
-		docs => docs.sort((a,b)=>((a.name>b.name)?1:((a.name<b.name)?-1:0)))
+		docs => docs.sort((a,b)=>((a.name||a.userName>b.name||b.userName)?1:((a.name||a.userName<b.name||b.userName)?-1:0)))
 	).map(
 		constructPagesAdminMenuData
 	).then(
