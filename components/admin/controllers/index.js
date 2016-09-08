@@ -13,7 +13,7 @@ function getPages(component) {
 
 		component.res.json({
 			data: docs,
-			title: "Please select a page to edit"
+			title: 'Please select a page to edit'
 		});
 		return component;
 	});
@@ -21,8 +21,10 @@ function getPages(component) {
 
 let exported = {
 	index: function(component) {
-		component.template = "admin";
-		component.done = true;
+		if (component.req.app.templates.admin) {
+			component.template = 'admin';
+			component.done = true;
+		}
 
 		return Promise.resolve(component);
 	},
