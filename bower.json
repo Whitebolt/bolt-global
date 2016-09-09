@@ -2,7 +2,7 @@
   "name": "bolt-global",
   "version": "0.0.1",
   "description": "Global bolt folder",
-  "homepage": "http://aaron.whitebolt/team-dev/angular-big-gallery",
+  "homepage": "http://aaron.whitebolt:bolt/global",
   "main": "index.js",
   "author": "Whitebolt <hello@whitebolt.net>",
   "private": false,

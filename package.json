@@ -5,46 +5,13 @@
   "main": "index.js",
   "dependencies": {},
   "devDependencies": {
-    "babel-preset-es2015": "*",
-    "foundation-sites": "^6.2.3",
-    "gulp": "^3.9.1",
-    "gulp-angular-embed-templates": "^2.2.0",
-    "gulp-babel": "*",
-    "gulp-clean-css": "^2.0.11",
-    "gulp-concat": "^2.6.0",
-    "gulp-css-url-rebase": "^0.2.2",
-    "gulp-sass": "^2.3.2",
-    "gulp-sourcemaps": "^1.6.0",
-    "gulp-uglify": "*",
-    "gulp-util": "^3.0.7"
   },
-  "babel": {
-    "presets": [
-      "es2015"
-    ]
-  },
-  "jsBuildRoots": [
-    "./public/lib/angular-bolt"
-  ],
-  "srcRoots": [
-    "./src/scripts/admin/app.js",
-    "./src/scripts/admin/boltUiEvents.js",
-    "./src/scripts/admin/boltUiState.js",
-    "./src/scripts/admin/stateHide/index.js",
-    "./src/scripts/admin/loadContentOn/index.js",
-    "./src/scripts/admin/hideOn/index.js",
-    "./src/scripts/admin/panel/index.js",
-    "./src/scripts/admin/navBar/index.js",
-    "./src/scripts/admin/badge/index.js",
-    "./src/scripts/admin/form/index.js",
-    "./src/scripts/admin/bootstrap.js"
-  ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git@aaron.whitebolt:bolt/bolt-global.git"
+    "url": "git@aaron.whitebolt:bolt/global.git"
   },
   "keywords": [
     "bolt",
