@@ -1,27 +1,20 @@
 'use strict';
 
 function setActive(doc, items) {
-  let itemSet = false;
-  (items || []).forEach(item => {
-    if (item.path === doc.path) {
-      item.active = true;
-      itemSet = true;
-    } else {
-      item.active = false;
-    }
+	return !!(items || []).find(item=>{
+		if (!item.path && !doc.path) return undefined;
 
-    if (setActive(doc, item.items)) {
-      item.active = true;
-    }
-  });
-  return itemSet;
+		let itemPath = item.path.toLowerCase().trim();
+		let docPath = doc.path.toLowerCase().trim();
+
+		item.active = (setActive(doc, item.items) || (itemPath === docPath) || (itemPath === doc._parentPagePath));
+
+		return item.active;
+	});
 }
 
 function filterUndef(items) {
-	return items.filter(item=>{
-		if (!item) return false;
-		return true;
-	});
+	return items.filter(item=>item);
 }
 
 function filterMenu(doc, db, session) {
@@ -33,26 +26,22 @@ function filterMenu(doc, db, session) {
 				return item;
 			}) : item);
 		});
-	})).then(items=>filterUndef(items));
+	})).then(filterUndef);
 }
 
 function getMenu(menuName, req) {
 	return req.app.db.collection('menus')
 		.findOne({"name": menuName})
 		.then(doc=>{
-			return filterMenu(doc, req.app.db, req.session).then(items=>{
-				doc.items = items;
-				return doc;
-			});
-		})
-		.then(doc=>{
-			if (doc) {
-				req.doc.menu = doc;
-				setActive(req.doc, doc.items)
-			}
-
+			req.doc.menu = doc;
+			return doc;
+		}).then(
+			doc=>filterMenu(doc, req.app.db, req.session)
+		).then(items=>{
+			req.doc.menu.items = items;
+			setActive(req.doc, items);
 			return {};
-		}, err => {
+		}).error(err=>{
 			return {};
 		});
 }

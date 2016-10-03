@@ -9,7 +9,7 @@ const hash = Promise.promisify(bcrypt.hash);
 const SALT_WORK_FACTOR = 10;
 
 function loginView(component) {
-	if (component.view) {
+	if (component.view && ((component.req && component.req.doc) || (component.doc))) {
 		let doc = component.doc || component.req.doc || {};
 		return component.view(doc._view || "auth/login", doc, component.req, component.parent);
 	}
