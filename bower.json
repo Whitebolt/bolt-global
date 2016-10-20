@@ -32,7 +32,8 @@
     "angular-ui-tinymce": "^0.0.16",
     "angular-auto-value": "^3.0.0",
     "tinymce": "^4.4.2",
-    "socket.io-client": "^1.4.8"
+    "socket.io-client": "^1.4.8",
+    "foundation": "^5.5.3"
   },
   "devDependencies": {},
   "ignore": [],
