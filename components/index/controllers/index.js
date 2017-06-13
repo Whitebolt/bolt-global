@@ -39,8 +39,24 @@ let exported = {
 
 			if (doc) {
 				let isJson = ((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
+				let jsonExports = (app.components.index.controllers.index._jsonExports || {});
+
 				assignDoc(req, doc);
-				if (!component.template) addTemplate(component, isJson);
+				if (isJson && jsonExports.index) {
+					component.data = {};
+					jsonExports.index.forEach(fieldName=>{
+						component.data[fieldName] = req.doc[fieldName];
+					});
+				} else {
+					if (!component.template) addTemplate(component, isJson);
+				}
+
+				if (isJson) {
+					component.mime("json");
+				} else {
+					component.mime(req.doc.mime || "html");
+				}
+
 				component.done = true;
 			}
 
