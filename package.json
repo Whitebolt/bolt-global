@@ -20,5 +20,11 @@
     "express"
   ],
   "author": "Stephen Simpson <stephen@whitebolt.net>",
-  "license": "SEE LICENSE IN LICENCE.md"
+  "license": "SEE LICENSE IN LICENCE.md",
+  "config": {
+    "boltConfigProperties": [
+      "lib",
+      "css"
+    ]
+  }
 }
