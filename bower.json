@@ -23,17 +23,17 @@
   "dependencies": {
     "es5-shim": "^4.5.7",
     "es6-shim": "^0.35.0",
-    "jquery": "^2.2.3",
-    "what-input": "^2.0.1",
-    "angular-allery-menu": "git@aaron.whitebolt:team-dev/angular-allery-menu.git",
+    "jquery": "^3.0.0",
+    "what-input": "^4.0.1",
     "animate.css": "^3.5.2",
     "foundation-sites": "^6.2.0",
-    "angular-bolt": "git@aaron.whitebolt:bolt/angular-bolt.git",
+    "angular-bolt": "git@aaron.whitebolt:angular/angular-bolt.git",
     "angular-ui-tinymce": "^0.0.16",
     "angular-auto-value": "^3.0.0",
     "tinymce": "^4.4.2",
-    "socket.io-client": "^1.4.8",
-    "foundation": "^5.5.3"
+    "socket.io-client": "^2.0.0",
+    "foundation": "^5.5.3",
+    "angular": "^1.6.4"
   },
   "devDependencies": {},
   "ignore": [],
