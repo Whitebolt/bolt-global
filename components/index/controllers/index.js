@@ -40,7 +40,7 @@ let exported = {
 			if (!doc && !app.config.proxy) throw "Document not found in Database";
 
 			if (doc) {
-				let isJson = ((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
+				let isJson = !!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
 				let jsonExports = (app.components.index.controllers.index._jsonExports || {});
 
 				assignDoc(req, doc);
