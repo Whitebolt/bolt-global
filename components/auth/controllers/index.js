@@ -38,9 +38,9 @@ function logout(component) {
 
 let exported = {
 	login: function(component) {
-		return ((component.req.method === 'GET') ?
+		return ((component.req.method.toUpperCase() === 'GET') ?
 			loginView(component) :
-			((component.req.method === 'POST') ? login(component) : component)
+			((component.req.method.toUpperCase() === 'POST') ? login(component) : component)
 		);
 	},
 
