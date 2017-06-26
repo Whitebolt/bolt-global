@@ -22,6 +22,7 @@ function login(component) {
 		passport.authenticate('local')(component.req, {end:()=>{
 			component.redirect = '/auth/login?authFailed=1';
 			component.req.logout();
+			component.res.statusCode = 401;
 			return resolve(component);
 		}}, ()=>{
 			component.redirect = '/';
