@@ -17,6 +17,9 @@ function loginView(component) {
 	return component;
 }
 
+/**
+ * @todo Perhaps send a 401 with some sort of message instead of a redirect.
+ */
 function login(component) {
 	return new Promise(resolve=>{
 		passport.authenticate('local')(component.req, {end:()=>{
