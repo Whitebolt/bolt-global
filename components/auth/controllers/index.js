@@ -22,12 +22,14 @@ function loginView(component) {
  */
 function login(component) {
 	return new Promise(resolve=>{
-		passport.authenticate('local')(component.req, {end:()=>{
+		let {req} = component;
+		passport.authenticate('local')(req, {end: ()=>{
 			component.redirect = '/auth/login?authFailed=1';
-			component.req.logout();
+			req.logout();
 			component.res.statusCode = 401;
 			return resolve(component);
 		}}, ()=>{
+			if (req.isWebSocket) req.websocket.request.session = req.session;
 			component.redirect = '/';
 			return resolve(component);
 		});
@@ -35,7 +37,8 @@ function login(component) {
 }
 
 function logout(component) {
-	component.req.logout();
+	let req = (component.req.websocket ? component.req.websocket.request : component.req);
+	req.logout();
 	component.redirect = '/';
 	return Promise.resolve(component);
 }

@@ -29,15 +29,11 @@ function assignDoc(req, doc) {
 }
 
 let exported = {
-	index: function(component) {
-		const req = component.req;
-		const app = req.app;
-		const path = bolt.getPathFromRequest(req);
-
+	index: function(component, req, app, path, config, done) {
 		return bolt.getDoc({
 			query: {path}, req
 		}).then(doc=>{
-			if (!doc && !app.config.proxy) throw "Document not found in Database";
+			if (!doc && !config.proxy) throw "Document not found in Database";
 
 			if (doc) {
 				let isJson = !!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
@@ -56,11 +52,15 @@ let exported = {
 					component.mime(req.doc.mime || "html");
 				}
 
-				component.done = true;
+				done();
 			}
 
 			return component;
 		});
+	},
+	index2: function(){
+		// @annotation visibility private
+		console.log("HELLO2");
 	}
 };
 
