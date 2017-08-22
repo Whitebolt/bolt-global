@@ -46,6 +46,8 @@ function logout(req, component) {
 
 let exported = {
 	login: function(component, method, req) {
+		// @annotation schema authLogin
+
 		return ((method === 'get') ?
 			loginView(component, req) :
 			((method === 'post') ? login(component, req) : component)
