@@ -20,61 +20,59 @@ function loginView(component) {
 /**
  * @todo Perhaps send a 401 with some sort of message instead of a redirect.
  */
-function login(component) {
+function login(component, req) {
 	return new Promise(resolve=>{
-		let {req} = component;
 		passport.authenticate('local')(req, {end: ()=>{
 			component.redirect = '/auth/login?authFailed=1';
 			req.logout();
 			component.res.statusCode = 401;
 			return resolve(component);
 		}}, ()=>{
-			if (req.isWebSocket) req.websocket.request.session = req.session;
 			component.redirect = '/';
 			return resolve(component);
 		});
 	});
 }
 
-function logout(component) {
-	let req = (component.req.websocket ? component.req.websocket.request : component.req);
-	req.logout();
+function logout(req, component) {
+	if (req.isWebSocket) {
+		req.logout();
+	} else {
+		req.logout();
+	}
 	component.redirect = '/';
-	return Promise.resolve(component);
+	return component;
 }
 
 let exported = {
-	login: function(component) {
-		return ((component.req.method.toUpperCase() === 'GET') ?
-			loginView(component) :
-			((component.req.method.toUpperCase() === 'POST') ? login(component) : component)
+	login: function(component, method, req) {
+		return ((method === 'get') ?
+			loginView(component, req) :
+			((method === 'post') ? login(component, req) : component)
 		);
 	},
 
-	logout: logout,
+	logout: (req, component)=>logout(req, component),
 
-	"change-password": function(component) {
-		let req = component.req;
-
-		if (req.method === 'GET') {
+	"change-password": function(component, method, doc, session, body) {
+		if (method === 'get') {
 			if (component.view) {
-				let doc = component.doc || component.req.doc || {};
 				return component.view(doc._view || "auth/change-password", doc, component.req, component.parent);
 			}
-		} else if (req.method === 'POST') {
+		} else if (method === 'post') {
 			return new Promise(resolve => {
-				resolve(compare(req.body.password, req.session.password).then(authenticated => {
+				resolve(compare(body.password, session.password).then(authenticated => {
 					if (!authenticated) {
 						component.redirect = '/auth/change-password?authFailed=1';
 						return component;
 					}
 
-					if (req.body.password1 === req.body.password2) {
+					if (body.password1 === body.password2) {
 						return genSalt(SALT_WORK_FACTOR)
-							.then(salt => hash(req.body.password1, salt))
+							.then(salt => hash(body.password1, salt))
 							.then(hashedPassword => {
 								return req.app.db.collection('users').update({
-									_id: bolt.mongoId(req.session._id)
+									_id: bolt.mongoId(session._id)
 								}, {
 									$set: {password: hashedPassword}
 								});
@@ -87,7 +85,7 @@ let exported = {
 			});
 		}
 
-		return Promise.resolve(component);
+		return component;
 	}
 };
 
