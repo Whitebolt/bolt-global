@@ -1,5 +1,7 @@
 'use strict';
 
+const Promise = module.parent.require('bluebird');
+
 function addTemplate(component, isJson=false) {
 	let template;
 
@@ -28,33 +30,52 @@ function assignDoc(req, doc) {
 	}
 }
 
+function ok(component, doc, req, done, app) {
+	let isJson = !!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
+	let jsonExports = (app.components.index.controllers.index._jsonExports || {});
+
+	assignDoc(req, doc);
+
+	if (isJson && jsonExports.index && jsonExports.index.length ) {
+		component.sendFields = bolt.clone(jsonExports.index);
+	}
+
+	if (!component.template) addTemplate(component, isJson);
+
+	if (isJson) {
+		component.mime("json");
+	} else {
+		component.mime(req.doc.mime || "html");
+	}
+
+	done();
+
+	return component;
+}
+
+function set404(component) {
+	component.res.status(404);
+	component.res.body = "Page not found";
+	return component;
+}
+
 let exported = {
-	index: function(component, req, app, path, config, done) {
+	error: function(component, res, done, req, app) {
+		// @annotation accept-errors true
+
+		let doc = {};
+		doc.title = res.statusCode.toString();
+		doc.content = res.statusMessage;
+
+		return ok(component, doc, req, done, app);
+	},
+
+	index: function(component, req, res, app, path, config, done) {
 		return bolt.getDoc({
 			query: {path}, req
 		}).then(doc=>{
-			if (!doc && !config.proxy) throw "Document not found in Database";
-
-			if (doc) {
-				let isJson = !!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
-				let jsonExports = (app.components.index.controllers.index._jsonExports || {});
-
-				assignDoc(req, doc);
-				if (isJson && jsonExports.index && jsonExports.index.length ) {
-					component.sendFields = bolt.clone(jsonExports.index);
-				}
-
-				if (!component.template) addTemplate(component, isJson);
-
-				if (isJson) {
-					component.mime("json");
-				} else {
-					component.mime(req.doc.mime || "html");
-				}
-
-				done();
-			}
-
+			if (!doc && !config.proxy) return set404(component);
+			if (doc) ok(component, doc, req, done, app);
 			return component;
 		});
 	},
