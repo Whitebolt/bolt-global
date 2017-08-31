@@ -33,7 +33,9 @@
     "tinymce": "^4.4.2",
     "socket.io-client": "^2.0.0",
     "foundation": "^5.5.3",
-    "angular": "^1.6.4"
+    "angular": "^1.6.4",
+    "bson": "*",
+    "require1k": "^1.0.0"
   },
   "devDependencies": {},
   "ignore": [],
