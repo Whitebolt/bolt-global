@@ -73,15 +73,15 @@ let exported = {
 	index: function(component, req, res, app, path, config, done) {
 		return bolt.getDoc({
 			query: {path}, req
-		}).then(doc=>{
-			if (!doc && !config.proxy) return set404(component);
-			if (doc) ok(component, doc, req, done, app);
-			return component;
-		});
+		}).then(doc=>exported.indexDisplay(component, doc, req, done, app, config));
 	},
-	index2: function(){
+
+	indexDisplay: function(component, doc, req, done, app, config){
 		// @annotation visibility private
-		console.log("HELLO2");
+
+		if (!doc && !config.proxy) return set404(component);
+		if (doc) ok(component, doc, req, done, app);
+		return component;
 	}
 };
 
