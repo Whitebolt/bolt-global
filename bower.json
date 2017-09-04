@@ -35,7 +35,8 @@
     "foundation": "^5.5.3",
     "angular": "^1.6.4",
     "bson": "*",
-    "require1k": "^1.0.0"
+    "require1k": "^1.0.0",
+    "motion-ui": "^1.2.3"
   },
   "devDependencies": {},
   "ignore": [],

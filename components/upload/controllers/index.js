@@ -24,8 +24,6 @@ let exported = {
 		let ready = false;
 		let count = 0;
 
-		console.log(req.sessionID);
-
 		function append(chunk) {
 			ready = false;
 			count++;
