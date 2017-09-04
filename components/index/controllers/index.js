@@ -6,15 +6,15 @@ function addTemplate(component, isJson=false) {
 	let template;
 
 	if (isJson) {
-		if (component.req.doc.viewContentOnly && component.req.app.templates[doc.viewContentOnly]) {
+		if (component.req.doc.viewContentOnly && component.req.app.templates[component.req.doc.viewContentOnly]) {
 			template = component.req.doc.viewContentOnly
-		} else if (component.req.doc.view && component.req.app.templates[doc.view + "ContentOnly"]) {
+		} else if (component.req.doc.view && component.req.app.templates[component.req.doc.view + "ContentOnly"]) {
 			template = component.req.doc.view + "ContentOnly"
 		} else if (component.req.app.templates["indexContentOnly"]) {
 			template = "indexContentOnly"
 		}
-	} else if (component.req.doc.view && component.req.app.templates[doc.view]) {
-		template = component.req.app.templates[doc.view];
+	} else if (component.req.doc.view && component.req.app.templates[component.req.doc.view]) {
+		template = component.req.app.templates[component.req.doc.view];
 	} else {
 		template = "index";
 	}
