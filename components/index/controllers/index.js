@@ -70,10 +70,10 @@ let exported = {
 		return ok(component, doc, req, done, app);
 	},
 
-	index: function(component, req, res, app, path, config, done) {
+	index: function(component, req, res, app, path) {
 		return bolt.getDoc({
 			query: {path}, req
-		}).then(doc=>exported.indexDisplay(component, doc, req, done, app, config));
+		}).then(doc=>this.indexDisplay());
 	},
 
 	indexDisplay: function(component, doc, req, done, app, config){
