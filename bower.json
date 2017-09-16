@@ -37,7 +37,8 @@
     "bson": "*",
     "require1k": "^1.0.0",
     "motion-ui": "^1.2.3",
-    "font-awesome": "^4.7.0"
+    "font-awesome": "^4.7.0",
+    "jdataview": "^2.5.0"
   },
   "devDependencies": {},
   "ignore": [],
