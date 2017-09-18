@@ -4,7 +4,8 @@
   "description": "Bolt global libraries and components",
   "main": "index.js",
   "dependencies": {
-    "babel-preset-es2015": "^6.22.0"
+    "babel-preset-es2015": "^6.22.0",
+    "binar-messsage-format": "git@aaron.whitebolt:simpo/binary-message-format.git"
   },
   "devDependencies": {},
   "scripts": {
