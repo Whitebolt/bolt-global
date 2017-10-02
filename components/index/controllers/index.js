@@ -1,7 +1,5 @@
 'use strict';
 
-const Promise = module.parent.require('bluebird');
-
 function addTemplate(component, isJson=false) {
 	let template;
 
@@ -22,19 +20,9 @@ function addTemplate(component, isJson=false) {
 	component.template = template;
 }
 
-function assignDoc(req, doc) {
-	if (req.doc) {
-		Object.assign(req.doc, doc);
-	} else {
-		req.doc = doc;
-	}
-}
-
 function ok(component, doc, req, done, app) {
 	let isJson = !!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
 	let jsonExports = (app.components.index.controllers.index._jsonExports || {});
-
-	assignDoc(req, doc);
 
 	if (isJson && jsonExports.index && jsonExports.index.length ) {
 		component.sendFields = bolt.clone(jsonExports.index);
@@ -49,14 +37,11 @@ function ok(component, doc, req, done, app) {
 	}
 
 	done();
-
-	return component;
 }
 
-function set404(component) {
-	component.res.status(404);
-	component.res.body = "Page not found";
-	return component;
+function set404(res) {
+	res.status(404);
+	res.body = "Page not found";
 }
 
 let exported = {
@@ -70,18 +55,17 @@ let exported = {
 		return ok(component, doc, req, done, app);
 	},
 
-	index: function(component, req, res, app, path) {
-		return bolt.getDoc({
-			query: {path}, req
-		}).then(doc=>this.indexDisplay());
+	index: async function(path, req, doc) {
+		const _doc = await bolt.getDoc({query: {path}, req});
+		Object.assign(doc, _doc);
+		return this.indexDisplay();
 	},
 
-	indexDisplay: function(component, doc, req, done, app, config){
+	indexDisplay: function(component, doc, req, done, app, config, res){
 		// @annotation visibility private
 
-		if (!doc && !config.proxy) return set404(component);
+		if (!doc && !config.proxy) return set404(res);
 		if (doc) ok(component, doc, req, done, app);
-		return component;
 	}
 };
 
