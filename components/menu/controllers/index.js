@@ -29,17 +29,17 @@ function filterMenu(doc, db, session) {
 	})).then(filterUndef);
 }
 
-function getMenu(menuName, req) {
-	return req.app.db.collection('menus')
+function getMenu(menuName, app, doc, db, session) {
+	return db.collection('menus')
 		.findOne({"name": menuName})
-		.then(doc=>{
-			req.doc.menu = doc;
+		.then(_doc=>{
+			doc.menu = _doc;
 			return doc;
 		}).then(
-			doc=>filterMenu(doc, req.app.db, req.session)
+			doc=>filterMenu(doc, db, session)
 		).then(items=>{
-			req.doc.menu.items = items;
-			setActive(req.doc, items);
+			doc.menu.items = items;
+			setActive(doc, items);
 			return {};
 		}).error(err=>{
 			return {};
@@ -47,18 +47,14 @@ function getMenu(menuName, req) {
 }
 
 let exported = {
-	index: function(component) {
-		let doc = component.doc || component.req.doc || {};
-		let parent = component.parent || {};
-		let menuName = parent.menu || "main";
-		let viewName = parent.subMenu?"menu/sub":"menu/index";
+	index: async function(view, doc, parent, req, app, db, session) {
+		const menuName = parent.menu || "main";
+		const viewName = parent.subMenu?"menu/sub":"menu/index";
 
 		if (!doc.menu || parent._reloadMenu) {
-			return getMenu(menuName, component.req).then(blah =>
-				component.view(viewName, doc, component.req, component.parent)
-			);
+			return getMenu(menuName, app, doc, db, session).then(()=>view(viewName, doc, req, parent));
 		} else {
-			return component.view(viewName, doc, component.req, component.parent)
+			return view(viewName, doc, req, parent)
 		}
 	}
 };
