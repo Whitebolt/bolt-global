@@ -20,7 +20,7 @@ function addTemplate(component, isJson=false) {
 	component.template = template;
 }
 
-function ok(component, doc, req, done, app) {
+function ok(component, req, done, app) {
 	let isJson = !!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
 	let jsonExports = (app.components.index.controllers.index._jsonExports || {});
 
@@ -65,7 +65,7 @@ let exported = {
 		// @annotation visibility private
 
 		if (!doc && !config.proxy) return set404(res);
-		if (doc) ok(component, doc, req, done, app);
+		if (doc) ok(component, req, done, app);
 	}
 };
 

@@ -17,45 +17,27 @@ function filterUndef(items) {
 	return items.filter(item=>item);
 }
 
-function filterMenu(doc, db, session) {
-	return Promise.all((doc.items || []).map(item=>{
-		return bolt.getDoc({query: {path: item.path}, db, accessLevel:'read', session}).then(doc=>{
-			if (doc === undefined) return undefined;
-			return ((item.items) ? filterMenu(item, db, session).then(items=>{
-				item.items = items;
-				return item;
-			}) : item);
-		});
-	})).then(filterUndef);
+async function filterMenu(menu, db, session) {
+	const items = await Promise.all((menu.items || []).map(async (item)=>{
+		const itemDoc = bolt.getDoc({query: {path: item.path}, db, accessLevel:'read', session});
+		if (itemDoc === undefined) return undefined;
+		if (!item.items) return item;
+		item.items = await filterMenu(item, db, session);
+	}));
+
+	return filterUndef(items);
 }
 
-function getMenu(menuName, app, doc, db, session) {
-	return db.collection('menus')
-		.findOne({"name": menuName})
-		.then(_doc=>{
-			doc.menu = _doc;
-			return doc;
-		}).then(
-			doc=>filterMenu(doc, db, session)
-		).then(items=>{
-			doc.menu.items = items;
-			setActive(doc, items);
-			return {};
-		}).error(err=>{
-			return {};
-		});
+async function getMenu(menuName, doc, db, session) {
+	doc.menu = await db.collection('menus').findOne({"name": menuName});
+	doc.menu.items = await filterMenu(doc.menu, db, session);
+	setActive(doc, doc.menu.items);
 }
 
 let exported = {
 	index: async function(view, doc, parent, req, app, db, session) {
-		const menuName = parent.menu || "main";
-		const viewName = parent.subMenu?"menu/sub":"menu/index";
-
-		if (!doc.menu || parent._reloadMenu) {
-			return getMenu(menuName, app, doc, db, session).then(()=>view(viewName, doc, req, parent));
-		} else {
-			return view(viewName, doc, req, parent)
-		}
+		if (!doc.menu || parent._reloadMenu) await getMenu(parent.menu || "main", app, doc, db, session);
+		return view(parent.subMenu?"menu/sub":"menu/index", doc, req, parent)
 	}
 };
 
