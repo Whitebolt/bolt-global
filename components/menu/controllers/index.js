@@ -17,49 +17,27 @@ function filterUndef(items) {
 	return items.filter(item=>item);
 }
 
-function filterMenu(doc, db, session) {
-	return Promise.all((doc.items || []).map(item=>{
-		return bolt.getDoc({query: {path: item.path}, db, accessLevel:'read', session}).then(doc=>{
-			if (doc === undefined) return undefined;
-			return ((item.items) ? filterMenu(item, db, session).then(items=>{
-				item.items = items;
-				return item;
-			}) : item);
-		});
-	})).then(filterUndef);
+async function filterMenu(menu, db, session) {
+	const items = await Promise.all((menu.items || []).map(async (item)=>{
+		const itemDoc = bolt.getDoc({query: {path: item.path}, db, accessLevel:'read', session});
+		if (itemDoc === undefined) return undefined;
+		if (!item.items) return item;
+		item.items = await filterMenu(item, db, session);
+	}));
+
+	return filterUndef(items);
 }
 
-function getMenu(menuName, req) {
-	return req.app.db.collection('menus')
-		.findOne({"name": menuName})
-		.then(doc=>{
-			req.doc.menu = doc;
-			return doc;
-		}).then(
-			doc=>filterMenu(doc, req.app.db, req.session)
-		).then(items=>{
-			req.doc.menu.items = items;
-			setActive(req.doc, items);
-			return {};
-		}).error(err=>{
-			return {};
-		});
+async function getMenu(menuName, doc, db, session) {
+	doc.menu = await db.collection('menus').findOne({"name": menuName});
+	doc.menu.items = await filterMenu(doc.menu, db, session);
+	setActive(doc, doc.menu.items);
 }
 
 let exported = {
-	index: function(component) {
-		let doc = component.doc || component.req.doc || {};
-		let parent = component.parent || {};
-		let menuName = parent.menu || "main";
-		let viewName = parent.subMenu?"menu/sub":"menu/index";
-
-		if (!doc.menu || parent._reloadMenu) {
-			return getMenu(menuName, component.req).then(blah =>
-				component.view(viewName, doc, component.req, component.parent)
-			);
-		} else {
-			return component.view(viewName, doc, component.req, component.parent)
-		}
+	index: async function(view, doc, parent, req, app, db, session) {
+		if (!doc.menu || parent._reloadMenu) await getMenu(parent.menu || "main", doc, db, session);
+		return view(parent.subMenu?"menu/sub":"menu/index", doc, req, parent)
 	}
 };
 
