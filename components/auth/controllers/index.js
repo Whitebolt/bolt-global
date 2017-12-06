@@ -17,21 +17,17 @@ function loginView(component) {
 	return component;
 }
 
-/**
- * @todo Perhaps send a 401 with some sort of message instead of a redirect.
- */
-function login(component, req, res) {
+function login(req, res, done) {
 	return new Promise(resolve=>{
 		req.logout();
-		passport.authenticate('local')(req, {end: ()=>{
-			component.redirect = '/auth/login?authFailed=1';
-			req.logout();
-			res.statusCode = 401;
-			return resolve(component);
-		}}, ()=>{
-			component.redirect = '/';
-			return resolve(component);
-		});
+
+		function resolver(status) {
+			res.statusCode = status;
+			done();
+			return resolve();
+		}
+
+		passport.authenticate('local')(req, {end:()=>resolver(401)}, ()=>resolver(204));
 	});
 }
 
@@ -48,11 +44,9 @@ function logout(req, component) {
 /// @annotation schema authLogin
 
 let exported = {
-	login: function(component, method, req, res) {
-		return ((method === 'get') ?
-			loginView(component, req) :
-			((method === 'post') ? login(component, req, res) : component)
-		);
+	login: function(method, req, res, done) {
+		if (method === 'get') return loginView(req);
+		if (method === 'post') return login(req, res, done);
 	},
 
 	logout: (req, component)=>logout(req, component),
