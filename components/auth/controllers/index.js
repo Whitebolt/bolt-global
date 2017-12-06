@@ -20,12 +20,13 @@ function loginView(component) {
 /**
  * @todo Perhaps send a 401 with some sort of message instead of a redirect.
  */
-function login(component, req) {
+function login(component, req, res) {
 	return new Promise(resolve=>{
+		req.logout();
 		passport.authenticate('local')(req, {end: ()=>{
 			component.redirect = '/auth/login?authFailed=1';
 			req.logout();
-			component.res.statusCode = 401;
+			res.statusCode = 401;
 			return resolve(component);
 		}}, ()=>{
 			component.redirect = '/';
@@ -44,13 +45,13 @@ function logout(req, component) {
 	return component;
 }
 
-let exported = {
-	login: function(component, method, req) {
-		// @annotation schema authLogin
+/// @annotation schema authLogin
 
+let exported = {
+	login: function(component, method, req, res) {
 		return ((method === 'get') ?
 			loginView(component, req) :
-			((method === 'post') ? login(component, req) : component)
+			((method === 'post') ? login(component, req, res) : component)
 		);
 	},
 
