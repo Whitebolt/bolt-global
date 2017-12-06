@@ -22,11 +22,11 @@ function addTemplate(component, isJson=false) {
 
 function ok(component, req, done, app) {
 	let isJson = !!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
-	let jsonExports = (app.components.index.controllers.index._jsonExports || {});
-
-	if (isJson && jsonExports.index && jsonExports.index.length ) {
-		component.sendFields = bolt.clone(jsonExports.index);
-	}
+	let jsonExports = (req.exports ?
+		{index: req.exports} :
+		(app.components.index.controllers.index._jsonExports || {})
+	);
+	if (isJson && jsonExports.index && jsonExports.index.length ) component.sendFields = bolt.clone(jsonExports.index);
 
 	if (!component.template) addTemplate(component, isJson);
 
@@ -55,9 +55,8 @@ let exported = {
 		return ok(component, doc, req, done, app);
 	},
 
-	index: async function(path, req, doc) {
-		const _doc = await bolt.getDoc({query: {path}, req});
-		Object.assign(doc, _doc);
+	index: async function(path, doc, db, req) {
+		if (!req.done) Object.assign(doc, await db.getDoc({query: {path}}));
 		return this.indexDisplay();
 	},
 
@@ -65,7 +64,7 @@ let exported = {
 		// @annotation visibility private
 
 		if (!doc && !config.proxy) return set404(res);
-		if (doc) ok(component, req, done, app);
+		if (doc) ok(component, req, done, app, req);
 	}
 };
 

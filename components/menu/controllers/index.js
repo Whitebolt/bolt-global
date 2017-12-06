@@ -36,7 +36,7 @@ async function getMenu(menuName, doc, db, session) {
 
 let exported = {
 	index: async function(view, doc, parent, req, app, db, session) {
-		if (!doc.menu || parent._reloadMenu) await getMenu(parent.menu || "main", app, doc, db, session);
+		if (!doc.menu || parent._reloadMenu) await getMenu(parent.menu || "main", doc, db, session);
 		return view(parent.subMenu?"menu/sub":"menu/index", doc, req, parent)
 	}
 };
