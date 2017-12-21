@@ -31,16 +31,6 @@ function login(req, res, done) {
 	});
 }
 
-function logout(req, component) {
-	if (req.isWebSocket) {
-		req.logout();
-	} else {
-		req.logout();
-	}
-	component.redirect = '/';
-	return component;
-}
-
 /// @annotation schema authLogin
 
 let exported = {
@@ -49,7 +39,7 @@ let exported = {
 		if (method === 'post') return login(req, res, done);
 	},
 
-	logout: (req, component)=>logout(req, component),
+	logout: (req)=>req.logout(),
 
 	"change-password": function(component, method, doc, session, body) {
 		if (method === 'get') {
