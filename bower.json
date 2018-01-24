@@ -38,7 +38,8 @@
     "require1k": "^1.0.0",
     "motion-ui": "^1.2.3",
     "font-awesome": "^4.7.0",
-    "jdataview": "^2.5.0"
+    "jdataview": "^2.5.0",
+    "binary-message-format": "http://aaron.whitebolt/simpo/binary-message-format.git"
   },
   "devDependencies": {},
   "ignore": [],
