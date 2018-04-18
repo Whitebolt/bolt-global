@@ -21,7 +21,9 @@ function addTemplate(component, isJson=false) {
 }
 
 function ok(component, req, done, app, instructions) {
-	let isJson = !!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body);
+	let isCsv = (instructions('global-index').get('format') === "csv");
+	let isJson = ((!!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body) || (instructions('global-index').get('format') === "json")) && !isCsv);
+
 	const controllerExports = instructions('global-index').get('exports');
 
 	let jsonExports = (controllerExports ?
@@ -32,7 +34,13 @@ function ok(component, req, done, app, instructions) {
 
 	if (!component.template) addTemplate(component, isJson);
 
-	if (isJson) {
+	if (isCsv) {
+		bolt.set(req, 'doc._responseMimeType', 'text/csv');
+		if (instructions('global-index').get('attachment')) {
+			bolt.set(req, 'doc._responseAttachmentName', instructions('global-index').get('attachment'));
+		}
+		component.mime("csv");
+	} else if (isJson) {
 		component.mime("json");
 	} else {
 		component.mime(req.doc.mime || "html");
