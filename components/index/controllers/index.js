@@ -3,16 +3,20 @@
 function addTemplate(component, isJson=false) {
 	let template;
 
+	const doc = bolt.get(component, 'res.locals.doc', {});
+	const templates = bolt.get(component, 'req.app.templates', {});
+	const {view, viewContentOnly} = doc;
+
 	if (isJson) {
-		if (component.req.doc.viewContentOnly && component.req.app.templates[component.req.doc.viewContentOnly]) {
-			template = component.req.doc.viewContentOnly
-		} else if (component.req.doc.view && component.req.app.templates[component.req.doc.view + "ContentOnly"]) {
-			template = component.req.doc.view + "ContentOnly"
-		} else if (component.req.app.templates["indexContentOnly"]) {
+		if (viewContentOnly && templates[viewContentOnly]) {
+			template = viewContentOnly;
+		} else if (doc.view && templates[`${view}ContentOnly`]) {
+			template = `${view}ContentOnly`
+		} else if (templates["indexContentOnly"]) {
 			template = "indexContentOnly"
 		}
-	} else if (component.req.doc.view && component.req.app.templates[component.req.doc.view]) {
-		template = component.req.app.templates[component.req.doc.view];
+	} else if (view && templates[view]) {
+		template = templates[view];
 	} else {
 		template = "index";
 	}
@@ -22,7 +26,7 @@ function addTemplate(component, isJson=false) {
 
 function ok(component, req, done, app, instructions) {
 	let isCsv = (instructions('global-index').get('format') === "csv");
-	let isJson = ((!!((req.method.toLowerCase() === "post") && req.is('application/json') && req.body) || (instructions('global-index').get('format') === "json")) && !isCsv);
+	let isJson = ((!!((req.method.toLowerCase() === 'post') && req.is('application/json') && req.body) || (instructions('global-index').get('format') === 'json')) && !isCsv);
 
 	const controllerExports = instructions('global-index').get('exports');
 
@@ -35,15 +39,15 @@ function ok(component, req, done, app, instructions) {
 	if (!component.template) addTemplate(component, isJson);
 
 	if (isCsv) {
-		bolt.set(req, 'doc._responseMimeType', 'text/csv');
+		bolt.set(req, 'res.locals.doc._responseMimeType', 'text/csv');
 		if (instructions('global-index').get('attachment')) {
-			bolt.set(req, 'doc._responseAttachmentName', instructions('global-index').get('attachment'));
+			bolt.set(req, 'res.locals.doc._responseAttachmentName', instructions('global-index').get('attachment'));
 		}
-		component.mime("csv");
+		component.mime('csv');
 	} else if (isJson) {
-		component.mime("json");
+		component.mime('json');
 	} else {
-		component.mime(req.doc.mime || "html");
+		component.mime(bolt.get(req, 'res.locals.doc.mime', 'html'));
 	}
 
 	done();
@@ -51,7 +55,7 @@ function ok(component, req, done, app, instructions) {
 
 function set404(res) {
 	res.status(404);
-	res.body = "Page not found";
+	res.body = 'Page not found';
 }
 
 let exported = {
