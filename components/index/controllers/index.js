@@ -77,7 +77,6 @@ let exported = {
 
 	indexDisplay: function(component, doc, req, done, app, config, res, instructions){
 		// @annotation visibility private
-
 		if (!doc && !config.proxy) return set404(res);
 		if (doc) ok(component, req, done, app, instructions);
 	}
